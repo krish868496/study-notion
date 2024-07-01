@@ -5,6 +5,7 @@ import HighlightText from "../components/core/HomePage/HighlightText";
 import CTAButton from "../components/core/HomePage/Button";
 import CodeBlocks from "../components/core/HomePage/CodeBlocks";
 import Banner from "../assets/Images/banner.mp4";
+import TimelineSection from "../components/core/HomePage/TimelineSection";
 
 const Home = () => {
   return (
@@ -129,7 +130,41 @@ Welcome to Study Notion, where students learn and instructors teach. Join our co
       </div>
 
       {/* section 2  */}
-      
+      <div className="bg-pure-greys-5 text-richblack-700 ">
+        <div className="home_bg h-[350px]">
+          <div className="w-11/12 max-w-maxContent mx-auto justify-between flex items-center gap-5">
+            <div className="flex gap-7 text-white ">
+              <CTAButton active={true} linkto={"/signup"}>
+                <div className="flex flex-col">
+                  Explore Full Catalog
+                  <FaArrowRight />
+                </div>
+              </CTAButton>
+              <CTAButton active={false} linkto={"/signup"}>
+                <div>Learn More</div>
+              </CTAButton>
+            </div>
+          </div>
+        </div>
+        <div className="w-11/12 max-w-maxContent mx-auto justify-between flex items-center gap-7">
+          <div className="flex gap-5">
+            <div className="text-4xl font-semibold w-[45%]">
+              Get the Skills you need for a{" "}
+              <HighlightText text={"Job that is in demand"} />{" "}
+            </div>
+          </div>
+          <div className="flex flex-col gap-10 w-[40%] ">
+            <div className="text-[16px]">
+              The modern StudyNotion is the dictates its own terms. Today, to be
+              a competitive specialist requires more than professional skills.
+            </div>
+            <CTAButton active={true} linkto={'signup'}>Learn More</CTAButton>
+          </div>
+
+        <TimelineSection />
+        <LearningLanguageSection />
+        </div>
+      </div>
       {/* section 3  */}
       {/* footer  */}
     </div>
