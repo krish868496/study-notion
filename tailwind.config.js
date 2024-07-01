@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  content: ["./src/**/*.{html,js*}"],
   theme: {
     fontFamily:{
       inter: ["Inter", "sans-serif"],
@@ -10,7 +10,7 @@ module.exports = {
     colors:{
       white: "#fff",
       black: "#000",
-      transparent: "#ffffff00",
+      // transparent: "#ffffff00",
       richblack:{
         5: "#F1F2FF",
         25: "#DBDDEA",
