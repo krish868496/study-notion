@@ -1,46 +1,123 @@
-import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import logo from '../../assets/Logo/logoFullLight.png'
-import NavbarLinks from '../../data/navbar-links'
+import React, { useEffect, useState } from "react";
+import { Link, matchPath, useLocation } from "react-router-dom";
+import logo from "../../assets/Logo/logoFullLight.png";
+import {NavbarLinks} from "../../data/navbar-links";
+import { useSelector } from "react-redux";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import ProfileDropDown from "../core/Auth/ProfileDropDown";
+import { apiConnector } from "../../services/apiconnector";
+import { categories } from "../../services/apis";
+import { IoIosArrowDropdownCircle } from "react-icons/io";
+
+const subLinks = [
+  {
+    title: "python",
+    link: "/catalog/python"
+  },
+  {
+    title: "javascript",
+    link: "/catalog/javascript"
+  }
+]
 
 const Navbar = () => {
-        const location = useLocation();
-        const matchRoute = (route) =>{
-                return matchPath({path:route}, location.pathname)
-        }
+  const { token } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.profile);
+  const { totalItems } = useSelector((state) => state.cart);
+
+  // const [subLinks, setSubLinks] = useState([]);
+  const fetchSublinks = async () => {
+    try {
+      const result = apiConnector("GET", categories.CATEGORIES_API);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    // fetchSublinks();
+  }, []);
+
+  const location = useLocation();
+  const matchRoute = (route) => {
+    return matchPath({ path: route }, location.pathname);
+  };
   return (
-    <div className='h-14  border-b-[1px] border-b-richblack-700'>
-        <div className="w-11/12 mx-auto max-w-maxContent flex items-center justify-between">
-        <Link to={'/'}>
-                <img src={logo} alt="logo" loading='lazy' className='' />
+    <div className="h-14  border-b-[1px] border-b-richblack-700">
+      <div className="w-11/12 mx-auto max-w-maxContent flex items-center justify-between">
+        <Link to={"/"}>
+          <img src={logo} alt="logo" loading="lazy" className="" />
         </Link>
         <nav>
-         <ul className="flex gap-x-6 text-richblack-25">
-                {
-                      NavbarLinks.map((link, index) => {
-                        return (
-                          <li key={index}>
-                            {link.title === "Catalog" ? (
-                              ""
-                            ) : (
-                              <Link to={link?.path}>
-                                <p className={`${matchRoute(link?.path) ? "text-yellow-25" : "text-richblack-25"}`}> {link?.title}</p>
-                              </Link>
-                            )}
-                          </li>
-                        );
-                      })  
-                }
-         </ul>
+          <ul className="flex gap-x-6 text-richblack-25">
+            {NavbarLinks.map((link, index) => {
+              return (
+                <li key={index}>
+                  {link.title === "Catalog" ? (
+                    ""
+                  ) : (
+                    <Link to={link?.path}>
+                      <div
+                        className={`${
+                          matchRoute(link?.path)
+                            ? "text-yellow-25"
+                            : "text-richblack-25"
+                        } relative flex items-center gap-2 group`}
+                      >
+                        {" "}
+                        {link?.title}
+                        <IoIosArrowDropdownCircle />
+                        <div className="invisible absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 flex flex-col rounded-md bg-richblack-5 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visited: group-hover:opacity-100 lg:w-[300px]">
+                        <div className="absolute left-1/2 top-0 h-6 w-6 rotate-45 rounded bg-richblack-5"></div>
+                        {
+                          subLinks.length ? (
+                              subLinks.map((subLink) => {
+                                return (
+                                  <Link
+                                    key={index}
+                                    to={subLink?.link}
+                                    className="text-richblack-25 hover:text-yellow-25"
+                                  >
+                                    {subLink?.title}
+                                  </Link>
+                                );
+                              })
+                            
+                          ) : (<div></div>)
+                        }
+                        </div>
+                      </div>
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         </nav>
         {/* login/signup/dashboard  */}
-        <div className='flex gap-x-4 items-center '>
-
+        <div className="flex gap-x-4 items-center ">
+          {user && user?.accountType !== "Instructor" && (
+            <Link to={`/dashboard/cart`} className="relative">
+              <AiOutlineShoppingCart />
+              {totalItems > 0 && (
+                <span className="absolute top-0 right-0 text-2xl font-bold text-white bg-richblack-800 rounded-full w-5 h-5">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+          )}
+          {token === null && (
+            <Link to={"/login"}>
+              <p className="text-yellow-25">Login</p>
+            </Link>
+          )}
+          {token === null && (
+            <Link to={"/signup"}>
+              <p className="text-yellow-25">Sign Up</p>
+            </Link>
+          )}
+          {token !== null && <ProfileDropDown />}
         </div>
-        </div>
-
+      </div>
     </div>
-  )
-}
+  );
+};
 
-                                                export default Navbar
+export default Navbar;
