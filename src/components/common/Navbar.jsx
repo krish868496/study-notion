@@ -36,11 +36,11 @@ const Navbar = () => {
   }, []);
 
   const location = useLocation();
-  const matchRoute = (route) => {
+ const matchRoute = (route) => {
     return matchPath({ path: route }, location.pathname);
   };
   return (
-    <div className="h-14  border-b-[1px] border-b-richblack-700">
+    <div className="h-14  border-b-[1px] border-b-richblack-700 flex items-center justify-center">
       <div className="w-11/12 mx-auto max-w-maxContent flex items-center justify-between">
         <Link to={"/"}>
           <img src={logo} alt="logo" loading="lazy" className="" />
@@ -51,7 +51,40 @@ const Navbar = () => {
               return (
                 <li key={index}>
                   {link.title === "Catalog" ? (
-                    ""
+                    <div className="group relative flex items-center gap-2">
+                      <Link to={link?.path}>
+                        <div
+                          className={`${
+                            matchRoute(link?.path)
+                              ? "text-yellow-25"
+                              : "text-richblack-25"
+                          }`}
+                        >
+                          {" "}
+                          {link?.title}
+                        </div>
+                      </Link>
+                      <IoIosArrowDropdownCircle />
+                      <div className="invisible z-20 absolute left-[50%] top-[30px] -translate-x-[43%]  flex flex-col rounded-md bg-richblack-5 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px]">
+                        <div className="absolute left-1/2 top-0 h-6 w-6 rotate-45 rounded bg-richblack-5 z-10"></div>
+                        {subLinks.length ? (
+                          subLinks.map((subLink) => {
+                            console.log(subLink);
+                            return (
+                              <Link
+                                key={index}
+                                to={subLink?.link}
+                                className="text-richblack-800 font-semibold hover:text-yellow-25 px-5 py-1"
+                              >
+                                {subLink?.title}
+                              </Link>
+                            );
+                          })
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    </div>
                   ) : (
                     <Link to={link?.path}>
                       <div
@@ -59,30 +92,10 @@ const Navbar = () => {
                           matchRoute(link?.path)
                             ? "text-yellow-25"
                             : "text-richblack-25"
-                        } relative flex items-center gap-2 group`}
+                        }`}
                       >
                         {" "}
                         {link?.title}
-                        <IoIosArrowDropdownCircle />
-                        <div className="invisible absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 flex flex-col rounded-md bg-richblack-5 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visited: group-hover:opacity-100 lg:w-[300px]">
-                        <div className="absolute left-1/2 top-0 h-6 w-6 rotate-45 rounded bg-richblack-5"></div>
-                        {
-                          subLinks.length ? (
-                              subLinks.map((subLink) => {
-                                return (
-                                  <Link
-                                    key={index}
-                                    to={subLink?.link}
-                                    className="text-richblack-25 hover:text-yellow-25"
-                                  >
-                                    {subLink?.title}
-                                  </Link>
-                                );
-                              })
-                            
-                          ) : (<div></div>)
-                        }
-                        </div>
                       </div>
                     </Link>
                   )}
