@@ -26,13 +26,14 @@ const Navbar = () => {
   const { totalItems } = useSelector((state) => state.cart);
 
   // const [subLinks, setSubLinks] = useState([]);
-  const fetchSublinks = async () => {
+  const fetchSublinks = async() => {
     try {
-      const result = apiConnector("GET", categories.CATEGORIES_API);
+      const result = await apiConnector("GET", categories.CATEGORIES_API);
+      console.log(result);
     } catch (error) {}
   };
   useEffect(() => {
-    // fetchSublinks();
+    fetchSublinks();
   }, []);
 
   const location = useLocation();
