@@ -1,14 +1,24 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CTAButton from '../components/core/HomePage/Button'
 import { FaArrowLeft } from "react-icons/fa";
+import { apiConnector } from "../services/apiconnector";
+import {  endpoints } from "../services/apis";
 
 const ForgotPassword = () => {
   const { loading } = useSelector((state) => state.auth);
   const [emailSent, setEmailSent] = useState(false);
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
+
+  const handleSubmit = async (values) => {
+    console.log(values);
+    const {email} = values;
+    const { data } = await apiConnector("POST", endpoints.RESETPASSTOKEN_API, {email});
+    console.log(data);
+  };
+
 
   return (
     <div className="lg:w-11/12 w-full max-w-maxContent mx-auto text-richblack-25">
@@ -29,9 +39,7 @@ const ForgotPassword = () => {
               email: "",
             }}
             validationSchema={""}
-            onSubmit={(values, actions) => {
-              alert("form submitted successfully");
-            }}
+            onSubmit={handleSubmit}
           >
             {() => (
               <Form className="flex flex-col gap-5 w-[500px]">
@@ -55,13 +63,14 @@ const ForgotPassword = () => {
                         className="text-red-500 text-sm my-4"
                       />
                     </div>
-                    <CTAButton
+                    {/* <CTAButton
                       active={true}
                       type="submit"
                       //  onClick={handleSubmit}
                     >
                       {!emailSent ? "Reset Password" : "Resend Email"}
-                    </CTAButton>
+                    </CTAButton> */}
+                    <button type="submit">submit</button>
                   </>
                 )}
                   <Link to={"/login"} className="flex items-center gap-3">

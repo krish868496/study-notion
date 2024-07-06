@@ -1,19 +1,15 @@
 import axios from 'axios'
 
-// export const axiosInstance = axios.create({
-//     baseURL: url,
-//     headers: {
-//         Accept: 'application/json',
-//     }
+export const axiosInstance = axios.create({
 
-// })
+})
 export const apiConnector = (method, url, bodyData, headers, params= null) => {
-    return axios.create({
-            method,
-            url,
+    return axiosInstance({
+            method:`${method}`, 
+            url: `${url}`,
             data: bodyData ? bodyData : null,
             headers: headers ? headers : null,
-            params
+            params: params ? params : null
         })
 }
 

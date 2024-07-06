@@ -9,29 +9,35 @@ import { apiConnector } from "../../services/apiconnector";
 import { categories } from "../../services/apis";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 
-const subLinks = [
-  {
-    title: "python",
-    link: "/catalog/python"
-  },
-  {
-    title: "javascript",
-    link: "/catalog/javascript"
-  }
-]
+// const subLinks = [
+//   {
+//     title: "python",
+//     link: "/catalog/python"
+//   },
+//   {
+//     title: "javascript",
+//     link: "/catalog/javascript"
+//   }
+// ]
 
 const Navbar = () => {
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
   const { totalItems } = useSelector((state) => state.cart);
 
-  // const [subLinks, setSubLinks] = useState([]);
-  const fetchSublinks = async() => {
+  const [subLinks, setSubLinks] = useState([]);
+  console.log(subLinks);
+  async function fetchSublinks() {
     try {
-      const result = await apiConnector("GET", categories.CATEGORIES_API);
-      console.log(result);
+      const {data} = await apiConnector("GET", categories.CATEGORIES_API);
+      if(!data.success){
+        throw new Error(data.message)
+      }
+      setSubLinks(data?.allCategorys);
     } catch (error) {}
   };
+
+
   useEffect(() => {
     fetchSublinks();
   }, []);
@@ -70,14 +76,13 @@ const Navbar = () => {
                         <div className="absolute left-1/2 top-0 h-6 w-6 rotate-45 rounded bg-richblack-5 z-10"></div>
                         {subLinks.length ? (
                           subLinks.map((subLink) => {
-                            console.log(subLink);
                             return (
                               <Link
                                 key={index}
                                 to={subLink?.link}
                                 className="text-richblack-800 font-semibold hover:text-yellow-25 px-5 py-1"
                               >
-                                {subLink?.title}
+                                {subLink?.name}
                               </Link>
                             );
                           })

@@ -128,7 +128,10 @@ module.exports = {
       maxWidth:{
         maxContent: "1260px",
         maxContentTab: "650px"
-      }
+      },
+      boxShadow: {
+        'custom-input': '0px -1px 0px 0px #FFFFFF2E inset',
+      },
     },
   },
   plugins: [],

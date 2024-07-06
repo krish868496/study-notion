@@ -28,7 +28,7 @@ const SignupForm = () => {
                     type="text"
                     name="firstName"
                     placeholder="Enter first name"
-                    className="bg-[#161D29] px-6 py-2 rounded-md w-[220px] focus:outline-none"
+                    className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[220px] focus:outline-none"
                   />
                 </label>
                 <ErrorMessage
@@ -43,7 +43,7 @@ const SignupForm = () => {
                     type="text"
                     name="lastName"
                     placeholder="Enter last name"
-                    className="bg-[#161D29] w-[220px] px-6 py-2 rounded-md focus:outline-none"
+                    className="shadow-custom-input bg-[#161D29] w-[220px] px-6 py-2 rounded-md focus:outline-none"
                   />
                 </label>
                 <ErrorMessage name="lastName" lassName="text-red-500 text-sm" />
@@ -57,7 +57,7 @@ const SignupForm = () => {
                   type="email"
                   name="email"
                   placeholder="Enter email address"
-                  className="bg-[#161D29] px-6 py-2 rounded-md focus:outline-none"
+                  className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md focus:outline-none"
                 />
               </label>
               <ErrorMessage name="email" className="text-red-500 text-sm" />
@@ -66,22 +66,20 @@ const SignupForm = () => {
               <label htmlFor="phone" className="flex flex-col text-white">
                 Phone Number
                 <div className="flex space-x-2 mt-1">
-                  <div className="w-[100px] mr2">
-                    <div className="flex items-center  bg-[#161D29] rounded-md">
-                      <Field
-                        type="text"
-                        name="phn"
-                        placeholder="+91"
-                        className="bg-[#161D29] px-6 py-2 rounded-md focus:outline-none"
-                      />
-                      <FaAngleDown className="text-white" />
-                    </div>
+                  <div className="flex w-[80px] items-center shadow-custom-input bg-[#161D29] rounded-md">
+                    <Field
+                      type="text"
+                      name="phn"
+                      placeholder="+91"
+                      className="shadow-custom-input bg-[#161D29] px-2 py-2 w-[45px] rounded-tl-md rounded-bl-md focus:outline-none"
+                    />
+                    <FaAngleDown className="text-white mr-1" />
                   </div>
                   <Field
                     type="text"
                     name="phone"
                     placeholder="Enter phone number"
-                    className="bg-[#161D29] px-6 py-2 rounded-md focus:outline-none w-full"
+                    className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md focus:outline-none w-full"
                   />
                 </div>
               </label>
@@ -100,13 +98,16 @@ const SignupForm = () => {
                       type="password"
                       name="password"
                       placeholder="Enter Password"
-                      className="bg-[#161D29] px-6 py-2 focus:outline-none w-full"
+                      className="shadow-custom-input bg-[#161D29] px-6 py-2 focus:outline-none w-full"
                     />
                     <IoEyeSharp className="text-lg mr-2" />
                     {/* <FaEyeSlash /> */}
                   </div>
                 </label>
-                <ErrorMessage name="password" className="text-red-500 text-sm" />
+                <ErrorMessage
+                  name="password"
+                  className="text-red-500 text-sm"
+                />
               </div>
               <div className="">
                 <label htmlFor="email" className="flex flex-col text-white">
@@ -116,13 +117,16 @@ const SignupForm = () => {
                       type="password"
                       name="confirm-password"
                       placeholder="Enter confirm Password"
-                      className="bg-[#161D29] px-6 py-2 focus:outline-none w-full"
+                      className="shadow-custom-input bg-[#161D29] px-6 py-2 focus:outline-none w-full"
                     />
                     <IoEyeSharp className="text-lg mr-2" />
                     {/* <FaEyeSlash /> */}
                   </div>
                 </label>
-                <ErrorMessage name="confirm-password" className="text-red-500 text-sm" />
+                <ErrorMessage
+                  name="confirm-password"
+                  className="text-red-500 text-sm"
+                />
               </div>
             </div>
             <Link to={"/forgot-password"} className="flex justify-end">

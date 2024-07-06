@@ -17,7 +17,7 @@ reducers:{
         setLoading(state, value){
                 state.loading = value.payload;
         },
-        setToken(state, value){
+        setSignupData(state, value){
                 state.signupData = value.payload;
         }
 }
