@@ -48,8 +48,9 @@ const CodeBlocks = ({
           <p className="p-[2px] text-[14px]">11</p>
         </div>
         <div
-          className={`w-[90%] flex flex-col gap-2 text-[14px] font-bold font-mono ${codeColor}`}
+          className={`w-[90%] flex flex-col relative gap-2 text-[14px] font-bold font-mono ${codeColor} bg-custom-code`}
         >
+          <div className={`w-[372px] h-[257px] -left-20 -top-10 absolute rounded-full blur-xl opacity-5 bg-${backgroundGradient} `}></div>
           <TypeAnimation
             sequence={[codeblock, 5000, ""]}
             repeat={Infinity}
