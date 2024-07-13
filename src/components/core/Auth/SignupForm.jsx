@@ -1,28 +1,104 @@
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React from 'react'
-import { IoEyeSharp } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
-import CTAButton from '../HomePage/Button'
-import { FaAngleDown } from 'react-icons/fa';
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import React, { useState } from "react";
+import { IoEyeSharp } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
+import CTAButton from "../HomePage/Button";
+import { FaAngleDown, FaEyeSlash } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { setSignupData } from "../../../slices/authSlice";
+import * as Yup from "yup";
+import { sendOtp } from "../../../services/operations/authApi";
+
+export const accountTypeData = ["Student", "Instructor"];
 
 const SignupForm = () => {
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+    const [accountType, setAccountType] = useState("Student");
+  const { signupData } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
+  const handleSubmit = async (values) => {
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      contactNumber,
+      otp,
+    } = values;
+    dispatch(
+      setSignupData({
+        accountType,
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        contactNumber,
+        otp,
+      })
+    );
+    
+    dispatch(sendOtp(email, navigate));
+    
+  };
+   const handleAccountType = (data) => {
+     setAccountType(data);
+   };
+
+  // const validationSchema = Yup.object().shape({
+  //   accountType: Yup.string().required("Account type is required"),
+  //   firstName: Yup.string().required("First name is required"),
+  //   lastName: Yup.string().required("Last name is required"),
+  //   email: Yup.string()
+  //     .email("Invalid email address")
+  //     .required("Email is required"),
+  //   password: Yup.string().required("Password is required"),
+  //   confirmPassword: Yup.string()
+  //     .oneOf([Yup.ref("password"), null], "Passwords must match")
+  //     .required("Confirm Password is required"),
+  //   contactNumber: Yup.string().required("Phone number is required"),
+  //   otp: Yup.string().required("OTP is required"),
+  // });
+
   return (
     <div>
+      <div className="bg-[#161D29] rounded-full w-[210px] mb-10 p-1 gap-1 flex">
+        {accountTypeData?.map((data, index) => (
+          <button
+            onClick={() => handleAccountType(data)}
+            key={index}
+            className={`${
+              accountType === data ? "bg-[#000814] " : "bg-[#161D29]"
+            } bg-[#000814] rounded-[100px] py-1.5 px-4 text-white`}
+          >
+            {data}
+          </button>
+        ))}
+      </div>
       <Formik
-        initialValues={{ email: "", color: "red", firstName: "", lastName: "" }}
-        validationSchema={""}
-        onSubmit={(values, actions) => {
-          alert("form submitted successfully");
+        initialValues={{
+          accountType: "",
+          firstName: "",
+          lastName: "",
+          email: "",
+          contactNumber: "",
+          password: "",
+          confirmPassword: "",
+          otp: "",
         }}
+        validationSchema={""}
+        onSubmit={handleSubmit}
       >
         {() => (
           <Form className="flex flex-col gap-6 w-[500px]">
             <div className="flex justify-between">
-              <div className="">
-                <label
-                  htmlFor="firstName"
-                  className="flex flex-col text-white "
-                >
+              <div>
+                <label htmlFor="firstName" className="flex flex-col text-white">
                   First Name
                   <Field
                     type="text"
@@ -33,11 +109,12 @@ const SignupForm = () => {
                 </label>
                 <ErrorMessage
                   name="firstName"
+                  component="div"
                   className="text-red-500 text-sm"
                 />
               </div>
-              <div className="">
-                <label htmlFor="lastName" className="flex flex-col text-white ">
+              <div>
+                <label htmlFor="lastName" className="flex flex-col text-white">
                   Last Name
                   <Field
                     type="text"
@@ -46,12 +123,15 @@ const SignupForm = () => {
                     className="shadow-custom-input bg-[#161D29] w-[220px] px-6 py-2 rounded-md focus:outline-none"
                   />
                 </label>
-                <ErrorMessage name="lastName" lassName="text-red-500 text-sm" />
+                <ErrorMessage
+                  name="lastName"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
               </div>
             </div>
-
-            <div className="">
-              <label htmlFor="email" className="flex flex-col text-white ">
+            <div>
+              <label htmlFor="email" className="flex flex-col text-white">
                 Email Address
                 <Field
                   type="email"
@@ -60,16 +140,23 @@ const SignupForm = () => {
                   className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md focus:outline-none"
                 />
               </label>
-              <ErrorMessage name="email" className="text-red-500 text-sm" />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className="text-red-500 text-sm"
+              />
             </div>
             <div className="flex flex-col space-y-2">
-              <label htmlFor="phone" className="flex flex-col text-white">
+              <label
+                htmlFor="contactNumber"
+                className="flex flex-col text-white"
+              >
                 Phone Number
                 <div className="flex space-x-2 mt-1">
                   <div className="flex w-[80px] items-center shadow-custom-input bg-[#161D29] rounded-md">
                     <Field
                       type="text"
-                      name="phn"
+                      name="countryCode"
                       placeholder="+91"
                       className="shadow-custom-input bg-[#161D29] px-2 py-2 w-[45px] rounded-tl-md rounded-bl-md focus:outline-none"
                     />
@@ -77,54 +164,81 @@ const SignupForm = () => {
                   </div>
                   <Field
                     type="text"
-                    name="phone"
+                    name="contactNumber"
                     placeholder="Enter phone number"
                     className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md focus:outline-none w-full"
                   />
                 </div>
               </label>
               <ErrorMessage
-                name="phone"
+                name="contactNumber"
                 component="div"
                 className="text-red-500 text-sm"
               />
             </div>
             <div className="flex gap-4">
-              <div className="">
-                <label htmlFor="email" className="flex flex-col text-white">
+              <div>
+                <label htmlFor="password" className="flex flex-col text-white">
                   Password
                   <div className="flex items-center bg-[#161D29] rounded-md">
                     <Field
-                      type="password"
+                      type={passwordVisible ? "text" : "password"}
                       name="password"
                       placeholder="Enter Password"
                       className="shadow-custom-input bg-[#161D29] px-6 py-2 focus:outline-none w-full"
                     />
-                    <IoEyeSharp className="text-lg mr-2" />
-                    {/* <FaEyeSlash /> */}
+                    {passwordVisible ? (
+                      <IoEyeSharp
+                        className="text-lg mr-2 cursor-pointer"
+                        onClick={() => setPasswordVisible((prev) => !prev)}
+                      />
+                    ) : (
+                      <FaEyeSlash
+                        className="text-lg mr-2 cursor-pointer"
+                        onClick={() => setPasswordVisible((prev) => !prev)}
+                      />
+                    )}
                   </div>
                 </label>
                 <ErrorMessage
                   name="password"
+                  component="div"
                   className="text-red-500 text-sm"
                 />
               </div>
-              <div className="">
-                <label htmlFor="email" className="flex flex-col text-white">
+              <div>
+                <label
+                  htmlFor="confirmPassword"
+                  className="flex flex-col text-white"
+                >
                   Confirm Password
                   <div className="flex items-center bg-[#161D29] rounded-md">
                     <Field
-                      type="password"
-                      name="confirm-password"
+                      type={confirmPasswordVisible ? "text" : "password"}
+                      name="confirmPassword"
                       placeholder="Enter confirm Password"
                       className="shadow-custom-input bg-[#161D29] px-6 py-2 focus:outline-none w-full"
                     />
-                    <IoEyeSharp className="text-lg mr-2" />
-                    {/* <FaEyeSlash /> */}
+                    {confirmPasswordVisible ? (
+                      <IoEyeSharp
+                        className="text-lg mr-2 cursor-pointer"
+                        onClick={() =>
+                          setConfirmPasswordVisible((prev) => !prev)
+                        }
+                      />
+                    ) : (
+                      <FaEyeSlash
+                        className="text-lg mr-2 cursor-pointer"
+                        onClick={() =>
+                          setConfirmPasswordVisible((prev) => !prev)
+                        }
+                      />
+                    )}
                   </div>
                 </label>
                 <ErrorMessage
-                  name="confirm-password"
+                  name="confirmPassword"
+                  component="div"
                   className="text-red-500 text-sm"
                 />
               </div>
@@ -134,14 +248,17 @@ const SignupForm = () => {
                 Forgot password
               </p>
             </Link>
-            <CTAButton type="submit" active={true}>
+            {/* <CTAButton type="submit" active={true}>
               Submit
-            </CTAButton>
+            </CTAButton> */}
+            <button type="submit" className="text-white">
+              submit
+            </button>
           </Form>
         )}
       </Formik>
     </div>
   );
-}
+};
 
-export default SignupForm
+export default SignupForm;
