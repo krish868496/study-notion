@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <div>
       {/* section 1  */}
-      <div className="relative lg:w-11/12 w-full max-w-maxContent mx-auto flex flex-col items-center text-white justify-between lg:p-5">
+      <div className="relative lg:w-11/12 w-full max-w-maxContent mx-auto flex flex-col items-center text-white justify-between p-2 lg:p-5">
         <Link to={"/signup"}>
           <div className="group mt-16 p-[2px] lg:mx-auto rounded-full bg-richblack-800 font-bold text-richblack-200 transition-all duration-200 hover:scale-95 w-fit">
             <div
@@ -26,13 +26,13 @@ const Home = () => {
           </div>
         </Link>
         <div className="text-white my-4">
-          <h1 className="lg:text-[36px] text-[30px] leading-8 lg:leading-[44px] lg:tracking-tight text-center">
+          <h1 className="lg:text-[36px] text-[30px] leading-9 lg:leading-[44px] lg:tracking-tight tracking-wide lg:text-center text-left">
             Empower Your Future With
             <HighlightText text={"Coding Skills"} />
           </h1>
         </div>
 
-        <div className=" w-[90%] text-center text-lg font-bold text-richblue-300">
+        <div className=" lg:w-[90%] w-full text-left lg:text-center text-lg font-semibold lg:font-bold text-richblue-300">
           With our online coding courses, you can learn at your own pace, from
           anywhere in the world, and get access to a wealth of resources,
           including hands-on projects, quizzes, and personalized feedback from
@@ -49,7 +49,12 @@ const Home = () => {
         </div>
 
         <div className="mx-3 my-12 shadow-blue-200">
-          <video muted loop autoPlay>
+          <video
+            muted
+            loop
+            autoPlay
+            className=" border-r-8 border-b-8 border-solid border-white"
+          >
             <source src={Banner} type="video/mp4" />
           </video>
         </div>
@@ -59,7 +64,7 @@ const Home = () => {
           <CodeBlocks
             position={"lg:flex-row flex-col"}
             heading={
-              <div className="text-4xl font-bold">
+              <div className="lg:text-4xl text-3xl lg:leading-10 leading-9 tracking-normal font-bold">
                 'Unlock your'
                 <HighlightText text={"coding potential "} />
                 with our online courses
@@ -90,12 +95,13 @@ Welcome to Study Notion, where students learn and instructors teach. Join our co
 
 </html> `}
             codeColor={"text-yellow-25"}
+            backgroundGradient={"bg-custom-gradient-1"}
           />
         </div>
         {/* code section 2  */}
         <div>
           <CodeBlocks
-            position={"lg:flex-row-reverse"}
+            position={"lg:flex-row-reverse flex-col"}
             heading={
               <div className="text-4xl font-bold lg:w-[240px]">
                 Start
@@ -127,6 +133,7 @@ Welcome to Study Notion, where students learn and instructors teach. Join our co
 
 </html> `}
             codeColor={"text-yellow-25"}
+            backgroundGradient={"bg-custom-gradient-2"}
           />
         </div>
       </div>
@@ -135,7 +142,7 @@ Welcome to Study Notion, where students learn and instructors teach. Join our co
       <div className="bg-pure-greys-5 text-richblack-700">
         <div className="home_bg h-[320px] lg:w-11/12 lg:max-w-maxContent w-full flex gap-7 text-white mx-auto justify-center items-center">
           <CTAButton active={true} linkto={"/signup"}>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center lg:gap-4 gap-2">
               Explore Full Catalog
               <FaArrowRight />
             </div>
@@ -145,24 +152,24 @@ Welcome to Study Notion, where students learn and instructors teach. Join our co
           </CTAButton>
         </div>
 
-        <div className="w-11/12 max-w-maxContent mx-auto justify-between flex flex-col items-center gap-7">
-        <div className="flex justify-center gap-10">
-          <div className="text-4xl font-semibold w-[45%]">
+        <div className="w-11/12 max-w-maxContent mx-auto justify-between flex flex-col items-center lg:gap-7">
+          <div className="flex lg:flex-row flex-col justify-center gap-6 lg:gap-10">
+            <div className="text-4xl tracking-wide font-semibold w-full lg:w-[45%]">
               Get the Skills you need for a{" "}
               <HighlightText text={"Job that is in demand"} />{" "}
-          </div>
-
-          <div className="flex flex-col items-start gap-10 w-[40%] ">
-            <div className="text-[16px]">
-              The modern StudyNotion is the dictates its own terms. Today, to be
-              a competitive specialist requires more than professional skills.
             </div>
-            <CTAButton active={true} linkto={"signup"}>
-              Learn More
-            </CTAButton>
-          </div>
 
-        </div>
+            <div className="flex flex-col items-start lg:gap-10 w-full gap-6 lg:w-[40%] ">
+              <div className="text-[16px]">
+                The modern StudyNotion is the dictates its own terms. Today, to
+                be a competitive specialist requires more than professional
+                skills.
+              </div>
+              <CTAButton active={true} linkto={"signup"}>
+                Learn More
+              </CTAButton>
+            </div>
+          </div>
 
           <TimelineSection />
           <LearningLanguageSection />
@@ -171,9 +178,11 @@ Welcome to Study Notion, where students learn and instructors teach. Join our co
 
       {/* section 3  */}
       <div className="w-11/12 mx-auto max-w-maxContent flex flex-col justify-between gap-8 bg-richblack-900 text-white">
-      <InstructorSection />
-      <h2 className="text-center text-4xl font-semibold my-10">Review from Other Learner</h2>
-      {/* Review slider  */}
+        <InstructorSection />
+        <h2 className="text-center text-4xl font-semibold my-10">
+          Review from Other Learner
+        </h2>
+        {/* Review slider  */}
       </div>
       {/* footer  */}
     </div>
