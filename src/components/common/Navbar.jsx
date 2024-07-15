@@ -26,7 +26,6 @@ const Navbar = () => {
   const { totalItems } = useSelector((state) => state.cart);
 
   const [subLinks, setSubLinks] = useState([]);
-  console.log(subLinks);
   async function fetchSublinks() {
     try {
       const {data} = await apiConnector("GET", categories.CATEGORIES_API);
@@ -75,7 +74,7 @@ const Navbar = () => {
                       <div className="invisible z-20 absolute left-[50%] top-[30px] -translate-x-[43%]  flex flex-col rounded-md bg-richblack-5 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px]">
                         <div className="absolute left-1/2 top-0 h-6 w-6 rotate-45 rounded bg-richblack-5 z-10"></div>
                         {subLinks.length ? (
-                          subLinks.map((subLink) => {
+                          subLinks.map((subLink, index) => {
                             return (
                               <Link
                                 key={index}

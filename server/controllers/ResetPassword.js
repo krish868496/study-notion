@@ -100,3 +100,42 @@ exports.resetPassword = async (req, res) => {
                 message: "password reset successfully"
         })
 }
+
+
+// change password 
+exports.changePassword = async (req, res) => {
+const { password, newPassword, confirmNewPassword } = req.body;
+        const id = req.user.id;
+        const userDetails = await User.findById(id);
+const checkPassword = await bcrypt.compare(password, userDetails.password);
+
+ if(!checkPassword){
+        return res.status(403).json({
+                success: false,
+                message:"password is incorrect"
+        })
+ }
+
+ if(newPassword!== confirmNewPassword){
+        return res.status(403).json({
+                success: false,
+                message:"new password and confirm password should be same"
+        })
+ }
+
+ const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+ userDetails.password = hashedPassword;
+ const updatedPassword = await userDetails.save();
+
+
+ console.log(updatedPassword);
+
+ return res.status(200).json({
+        success: true,
+        message:"password changed successfully",
+        password: updatedPassword
+ })
+
+
+}

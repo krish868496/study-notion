@@ -16,12 +16,11 @@ const ForgotPassword = () => {
     console.log(values);
     const {email} = values;
     const { data } = await apiConnector("POST", endpoints.RESETPASSTOKEN_API, {email});
-    console.log(data);
   };
 
 
   return (
-    <div className="lg:w-11/12 w-full max-w-maxContent mx-auto text-richblack-25">
+    <div className="lg:w-11/12 w-full max-w-maxContent mx-auto text-richblack-25 p-4 my-5 lg:my-[100px]">
       {loading ? (
         <div>Loading...</div>
       ) : (
@@ -42,7 +41,7 @@ const ForgotPassword = () => {
             onSubmit={handleSubmit}
           >
             {() => (
-              <Form className="flex flex-col gap-5 w-[500px]">
+              <Form className="flex flex-col gap-5 lg:w-[500px] w-[350px]">
                 {!emailSent && (
                   <>
                     <div className="">
@@ -55,7 +54,7 @@ const ForgotPassword = () => {
                           type="email"
                           name="email"
                           placeholder="Enter email address"
-                          className="bg-[#161D29] px-6 py-3.5 rounded-md focus:outline-none"
+                          className="bg-[#161D29] px-6 py-3.5 mt-4 rounded-md focus:outline-none"
                         />
                       </label>
                       <ErrorMessage
@@ -63,19 +62,14 @@ const ForgotPassword = () => {
                         className="text-red-500 text-sm my-4"
                       />
                     </div>
-                    {/* <CTAButton
-                      active={true}
-                      type="submit"
-                      //  onClick={handleSubmit}
-                    >
-                      {!emailSent ? "Reset Password" : "Resend Email"}
-                    </CTAButton> */}
-                    <button type="submit">submit</button>
+                    <CTAButton button={true} active={true}>
+                      Submit
+                    </CTAButton>
                   </>
                 )}
-                  <Link to={"/login"} className="flex items-center gap-3">
-                    <FaArrowLeft /> <p>back to login</p>
-                  </Link>
+                <Link to={"/login"} className="flex items-center gap-3">
+                  <FaArrowLeft /> <p>back to login</p>
+                </Link>
               </Form>
             )}
           </Formik>

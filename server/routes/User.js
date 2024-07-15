@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 
 const {login, signUp, sendOTP} = require("../controllers/Auth")
-const {resetPassword, resetPasswordToken} = require("../controllers/ResetPassword")
+const {resetPassword, resetPasswordToken, changePassword} = require("../controllers/ResetPassword")
 
 const {auth} = require("../middlewares/auth")
 
@@ -21,6 +21,9 @@ router.post("/reset-password-token", resetPasswordToken)
 
 // router for resetting password after verification
 router.post("/reset-password", resetPassword)
+
+// change password after verification 
+router.post("/change-password", auth, changePassword)
 
 // export the router
 module.exports = router

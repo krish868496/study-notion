@@ -1,8 +1,11 @@
-import { Form, Formik } from 'formik';
-import React from 'react'
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import React, { useState } from 'react'
+import { FaArrowLeft } from 'react-icons/fa';
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
 
 const VerifyEmail = () => {
+  const [updatedPassword, setUpdatedPassword] = useState(false)
         const {loading} = useSelector((state) => state.auth)
   return (
     <div>
@@ -18,7 +21,7 @@ const VerifyEmail = () => {
               confirmPassword: "",
             }}
             validationSchema={""}
-            onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
           >
             {() => (
               <Form className="flex flex-col gap-5 w-[500px]">

@@ -7,11 +7,12 @@ exports.auth = async (req, res, next) => {
                 const token = req.body.token
                         || req.cookies.token
                         || req.header("Authorization").replace("Bearer ", "")
+
                 if (!token) {
                         return res.status(401).json({
-                                 message: "Invalid token",
-                                  success: false
-                                 })
+                                message: "Invalid token",
+                                success: false
+                        })
                 }
                 try {
                         // decode the token using verify method
@@ -20,7 +21,9 @@ exports.auth = async (req, res, next) => {
                         next();
                 } catch (error) {
                         console.log(error);
-                        res.status(401).json({ message: "Invalid token", success })
+                        res.status(401).json({
+                                
+                                 message: "Invalid token", success: false })
 
                 }
 

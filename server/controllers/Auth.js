@@ -35,6 +35,7 @@ exports.sendOTP = async (req, res) => {
                 });
 
 
+
                 // Check if the OTP is unique
                 let result = await OTP.findOne({ otp: otp });
                 while (result) {
@@ -47,9 +48,11 @@ exports.sendOTP = async (req, res) => {
                 }
 
                 const otpPayload = { email, otp };
+                console.log(otpPayload, "payload");
 
                 // Save OTP in DB
                 const otpData = await OTP.create(otpPayload);
+                console.log(otpData, "otp database");
                 res.status(200).json({
                         success: true,
                         message: "OTP sent successfully",
@@ -196,14 +199,15 @@ exports.login = async (req, res) => {
                         checkUser.password = undefined;
 
                         // create cookie 
-                        res.cookie("token", token, {
-                                expires: new Date(Date.now() + 3 * 24 * 1000 * 60 * 60),
-                                httpOnly: true
-                        }).status(200).json({
+                        // res.cookie("token", token, {
+                        //         expires: new Date(Date.now() + 3 * 24 * 1000 * 60 * 60),
+                        //         httpOnly: true
+                        // })
+                        res.status(200).json({
                                 message: "user logged in successfully",
                                 success: true,
                                 token,
-                                response: checkUser
+                                data: checkUser
                         })
                 }
 

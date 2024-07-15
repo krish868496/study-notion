@@ -19,7 +19,7 @@ const CodeBlocks = ({
       {/* section 1  */}
       <div className="flex flex-col lg:w-[50%] w-full gap-8">
         {heading}
-        <div className="text-richblack-300 font-bold">{subHeading}</div>
+        <div className="text-richblack-300 lg:font-bold font-semibold leading-6 lg:leading-7 tracking-wide text-[15px] lg:text-[16px]">{subHeading}</div>
         <div className="flex gap-7 mt-7">
           <CTAButton active={ctabtn1.active} linkto={ctabtn1.linkto}>
             <div className="flex items-center gap-2">
@@ -50,7 +50,7 @@ const CodeBlocks = ({
         <div
           className={`w-[90%] flex flex-col relative gap-2 text-[14px] font-bold font-mono ${codeColor} bg-custom-code`}
         >
-          <div className={`w-[372px] h-[257px] -left-20 -top-10 absolute rounded-full blur-xl opacity-5 bg-${backgroundGradient} `}></div>
+          <div className={`w-[372px] h-[257px] -left-20 -top-10 absolute rounded-full blur-xl opacity-5 ${backgroundGradient} `}></div>
           <TypeAnimation
             sequence={[codeblock, 5000, ""]}
             repeat={Infinity}

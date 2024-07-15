@@ -125,10 +125,15 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        'custom-code': 'linear-gradient(111.93deg, rgba(14, 26, 45, 0.24) -1.4%, rgba(17, 30, 50, 0.38) 104.96%)',
+        'custom-gradient-1': 'linear-gradient(123.77deg, #8A2BE2 -6.46%, #FFA500 59.04%, #F8F8FF 124.53%)',
+        'custom-gradient-2': 'linear-gradient(118.19deg, #1FA2FF -3.62%, #12D8FA 50.44%, #A6FFCB 104.51%)',
+      },
       maxWidth:{
         maxContent: "1260px",
         maxContentTab: "650px"
-      },
+      },    
       boxShadow: {
         'custom-input': '0px -1px 0px 0px #FFFFFF2E inset',
       },
