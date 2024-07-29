@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import logo from "../../assets/Logo/logoFullLight.png";
-import {NavbarLinks} from "../../data/navbar-links";
+import { NavbarLinks } from "../../data/navbar-links";
 import { useSelector } from "react-redux";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import ProfileDropDown from "../core/Auth/ProfileDropDown";
@@ -9,40 +9,29 @@ import { apiConnector } from "../../services/apiconnector";
 import { categories } from "../../services/apis";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 
-// const subLinks = [
-//   {
-//     title: "python",
-//     link: "/catalog/python"
-//   },
-//   {
-//     title: "javascript",
-//     link: "/catalog/javascript"
-//   }
-// ]
-
 const Navbar = () => {
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
   const { totalItems } = useSelector((state) => state.cart);
+  console.log(user);
 
   const [subLinks, setSubLinks] = useState([]);
   async function fetchSublinks() {
     try {
-      const {data} = await apiConnector("GET", categories.CATEGORIES_API);
-      if(!data.success){
-        throw new Error(data.message)
+      const { data } = await apiConnector("GET", categories.CATEGORIES_API);
+      if (!data.success) {
+        throw new Error(data.message);
       }
       setSubLinks(data?.allCategorys);
     } catch (error) {}
-  };
-
+  }
 
   useEffect(() => {
     fetchSublinks();
   }, []);
 
   const location = useLocation();
- const matchRoute = (route) => {
+  const matchRoute = (route) => {
     return matchPath({ path: route }, location.pathname);
   };
   return (
@@ -112,7 +101,7 @@ const Navbar = () => {
         {/* login/signup/dashboard  */}
         <div className="flex gap-x-4 items-center ">
           {user && user?.accountType !== "Instructor" && (
-            <Link to={`/dashboard/cart`} className="relative">
+            <Link to={`/dashboard/cart`} className="relative text-richblack-5">
               <AiOutlineShoppingCart />
               {totalItems > 0 && (
                 <span className="absolute top-0 right-0 text-2xl font-bold text-white bg-richblack-800 rounded-full w-5 h-5">
