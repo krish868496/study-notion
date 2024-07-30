@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { VscDashboard, VscSignOut } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,9 +13,23 @@ const ProfileDropDown = () => {
   const ref = useRef(null);
   // useOnClickOutside(ref, () => setOpen(false));
   // if (!user) return null;
+    const boxRef = useRef(null);
+
+    const handleClickOutside = (event) => {
+      if (boxRef.current && !boxRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    useEffect(() => {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
 
   return (
-    <button className="relative" onClick={() => setOpen(true)}>
+    <button ref={boxRef} className="relative" onClick={() => setOpen(true)}>
       <div className="flex items-center gap-x-1">
         <img
           src={user?.image}
@@ -37,14 +51,15 @@ const ProfileDropDown = () => {
             </div>
           </Link>
           <div
-          onClick={() => {
-            dispatch(logout(navigate))
-            setOpen(false);
-          }}
-           className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25">
+            onClick={() => {
+              dispatch(logout(navigate));
+              setOpen(false);
+            }}
+            className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25"
+          >
             <VscSignOut className="text-lg" />
             Logout
-           </div>
+          </div>
         </div>
       )}
     </button>
