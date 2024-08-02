@@ -13,16 +13,25 @@ exports.createSection = async (req, res) => {
                         })
                 }
                 const newSection = await Section.create({ sectionName })
-                console.log(newSection, "section created");
-                const updatedCourseDetails = await Course.findByIdAndUpdate(courseId, { $push: { courseContent: newSection._id } }, { new: true })
+                const updatedCourse = await Course.findByIdAndUpdate(courseId,
+                        { $push: { courseContent: newSection._id } },
+                        { new: true }
+                );
+                console.log(updatedCourse);
+
+                // Now populate the `courseContent` field to get the full details
+                const updatedCourseDetails = await Course.findById(courseId)
+                        .populate('courseContent');
+
+                console.log("Updated Course Details:", updatedCourseDetails);
 
                 return res.status(200).json({
                         message: "section created successfully",
                         success: true,
-                        response: newSection
+                        response: updatedCourseDetails
                 })
         } catch (error) {
-                console.log(erro)
+                console.log(error.message)
                 res.status(500).json({
                         message: error.message,
                         success: false
@@ -38,29 +47,33 @@ exports.createSection = async (req, res) => {
 exports.updateSection = async (req, res) => {
         try {
                 // data input 
-                const { sectionName, sectionId } = req.body;
+                const { sectionName, sectionId, courseId } = req.body;
                 // data validation 
-                if (!sectionName || !sectionId) {
+                if (!sectionName || !sectionId || !courseId) {
                         return res.status(400).json({
                                 message: "all fields are required",
                                 success: false
                         })
                 }
                 // update data 
-                const section = await Section.findByIdAndUpdate(sectionId, {sectionName}, {new: true} )
-
+                const section = await Section.findByIdAndUpdate(sectionId, { sectionName }, { new: true })
+                const updatedCourse = await Course.findByIdAndUpdate(courseId,
+                        { $pull: { courseContent: { _id: sectionId } } },
+                        { new: true }
+                        )
+                const updatedCourseDetails = await Course.findById(courseId).populate('courseContent')
                 return res.status(200).json({
                         message: "section updated successfully",
                         success: true,
-                        response: section
+                        response: updatedCourseDetails
                 })
-                
+
         } catch (error) {
-                console.log(erro)
+                console.log(error.message)
                 res.status(500).json({
                         message: error.message,
                         success: false
-                })   
+                })
         }
 }
 
@@ -68,9 +81,9 @@ exports.updateSection = async (req, res) => {
 exports.deleteSection = async (req, res) => {
         try {
                 // data input 
-                const { sectionId } = req.body;
+                const { sectionId, courseId } = req.body;
                 // data validation 
-                if (!sectionId) {
+                if (!sectionId || !courseId) {
                         return res.status(400).json({
                                 message: "all fields are required",
                                 success: false
@@ -78,16 +91,17 @@ exports.deleteSection = async (req, res) => {
                 }
                 // update data 
                 const section = await Section.findByIdAndDelete(sectionId)
-                const updatedCourseDetails = await Course.findByIdAndUpdate(section.courseId, { $pull: { courseContent: sectionId } }, { new: true })
-                
+                const updatedCourseDetails = await Course.findByIdAndUpdate(courseId, { $pull: { courseContent: sectionId } }, { new: true })
+                console.log(updatedCourseDetails, "updatedCourseDetails");
+
                 return res.status(200).json({
                         message: "section deleted successfully",
                         success: true,
-                        response: section
+                        response: updatedCourseDetails
                 })
 
         }
-        catch(error){
+        catch (error) {
                 console.log(erro)
                 res.status(500).json({
                         message: error.message,
