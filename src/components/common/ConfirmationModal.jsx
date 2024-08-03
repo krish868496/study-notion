@@ -2,7 +2,6 @@ import React from "react";
 import IconBtn from "./IconBtn";
 
 const ConfirmationModal = ({ modalData }) => {
-  console.log(modalData.btn2Handler);
   return (
     <>
       <div className="bg-richblack-700 text-richblack-5 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-1/2 
