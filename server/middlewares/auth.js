@@ -8,6 +8,7 @@ exports.auth = async (req, res, next) => {
                         || req.cookies.token
                         || req.header("Authorization").replace("Bearer ", "")
 
+                console.log(token, "jwt token");
                 if (!token) {
                         return res.status(401).json({
                                 message: "Invalid token",
