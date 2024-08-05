@@ -90,19 +90,19 @@ exports.deleteSection = async (req, res) => {
                         })
                 }
                 // update data 
-                const section = await Section.findByIdAndDelete(sectionId)
                 const updatedCourseDetails = await Course.findByIdAndUpdate(courseId, { $pull: { courseContent: sectionId } }, { new: true })
-                console.log(updatedCourseDetails, "updatedCourseDetails");
+                const populatedCourseDetails = await Course.findById(courseId).populate("courseContent")
+                
 
                 return res.status(200).json({
                         message: "section deleted successfully",
                         success: true,
-                        response: updatedCourseDetails
+                        response: populatedCourseDetails
                 })
 
         }
         catch (error) {
-                console.log(erro)
+                console.log(error)
                 res.status(500).json({
                         message: error.message,
                         success: false
