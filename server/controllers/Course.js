@@ -126,7 +126,6 @@ exports.editCourse = async (req, res) => {
 
                 //check if user instructor is
                 const userId = req.user.id;
-                console.log(userId, "userid");
                 const instructorDetails = await User.findById(userId, {accountType: "Instructor"})
                 console.log(instructorDetails, "instructor");
            
