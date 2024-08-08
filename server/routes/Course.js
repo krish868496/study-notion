@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router()
 
-const { createCourse, editCourse, getCourseDetails } = require("../controllers/Course")
+const { createCourse, editCourse, getCourseDetails, showAllCourses, getAllInstructorCourses } = require("../controllers/Course")
 // category controller import 
 const {  createCategory, showAllCategorys } = require("../controllers/Category")
 
 // section controller import 
 const { createSection, updateSection, deleteSection} = require("../controllers/Section")
 // subsection controller import 
-const {createSubSection, updateSubSection} = require("../controllers/SubSection")
+const {createSubSection, updateSubSection, deleteSubSection} = require("../controllers/SubSection")
 // rating controller import 
 // const {createRatingAndReview, getAllRating, getAverageRating} = require("../controllers/RatingAndReview")
 
@@ -26,10 +26,17 @@ router.put("/updateSection", auth, isInstructor, updateSection)
 // // delete section to a course
 router.delete("/deleteSection", auth, isInstructor, deleteSection)
 // // update section to a course
-// // router.post("/updatesubSection", auth, isInstructor, updaatesubSection)
-// // router.post("/deletesubSection", auth, isInstructor, deletesubsection)
+router.put("/updateSubSection", auth, isInstructor, updateSubSection)
+router.delete("/deleteSubSection", auth, isInstructor, deleteSubSection)
 router.post("/addSubSection", auth, isInstructor, createSubSection)
-// router.get("/getallCourses", getAllCourses)
+router.get("/getallCourses", showAllCourses)
+// course for all instructor 
+router.get(
+  "/getInstructorCourses",
+  auth,
+  isInstructor,
+  getAllInstructorCourses
+);
 // router.get("/getCourseDetails", getCourseDetails)
 // router.post("/verifysignature", verifySignature)
 
