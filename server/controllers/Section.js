@@ -22,7 +22,8 @@ exports.createSection = async (req, res) => {
                 const updatedCourseDetails = await Course.findById(courseId)
                         .populate('courseContent');
 
-                console.log("Updated Course Details:", updatedCourseDetails);
+                        console.log(updatedCourseDetails, "updatedCourseDetails");
+
 
                 return res.status(200).json({
                         message: "section created successfully",
