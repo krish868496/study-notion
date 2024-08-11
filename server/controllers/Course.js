@@ -238,7 +238,8 @@ exports.showAllCourses = async (req, res) => {
 exports.getCourseDetails = async (req, res) => {
   try {
     // get course id
-    const { courseId } = req.body;
+    const { courseId } = req.params;
+    console.log(courseId);
     // find course details
     const courseDetails = await Course.findById(courseId)
       .populate({
@@ -246,9 +247,15 @@ exports.getCourseDetails = async (req, res) => {
         populate: {
           path: "additionalDetails",
         },
+        populate: {
+          path: "courses",
+          populate: {
+            path: "courseContent"
+          }
+        }
       })
       .populate("category")
-      .populate("ratingAndReviews")
+      // .populate("ratingAndReviews")
       .populate({
         path: "courseContent",
         populate: {
@@ -263,6 +270,8 @@ exports.getCourseDetails = async (req, res) => {
         success: false,
       });
     }
+
+    console.log(courseDetails);
 
     return res.status(200).json({
       message: "course details",

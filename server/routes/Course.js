@@ -37,6 +37,19 @@ router.get(
   isInstructor,
   getAllInstructorCourses
 );
+router.get(
+  "/getInstructorCourses",
+  auth,
+  isInstructor,
+  getAllInstructorCourses
+);
+// getFull Course details 
+router.get(
+  "/getFullCourseDetails/:courseId",
+  auth,
+  isInstructor,
+  getCourseDetails
+);
 // router.get("/getCourseDetails", getCourseDetails)
 // router.post("/verifysignature", verifySignature)
 
