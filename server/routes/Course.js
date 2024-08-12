@@ -3,7 +3,7 @@ const router = express.Router()
 
 const { createCourse, editCourse, getCourseDetails, showAllCourses, getAllInstructorCourses } = require("../controllers/Course")
 // category controller import 
-const {  createCategory, showAllCategorys } = require("../controllers/Category")
+const {  createCategory, showAllCategorys, categoryPageDetails } = require("../controllers/Category")
 
 // section controller import 
 const { createSection, updateSection, deleteSection} = require("../controllers/Section")
@@ -31,13 +31,7 @@ router.delete("/deleteSubSection", auth, isInstructor, deleteSubSection)
 router.post("/addSubSection", auth, isInstructor, createSubSection)
 router.get("/getallCourses", showAllCourses)
 // course for all instructor 
-router.get(
-  "/getInstructorCourses",
-  auth,
-  isInstructor,
-  getAllInstructorCourses
-);
-router.get(
+router.post(
   "/getInstructorCourses",
   auth,
   isInstructor,
@@ -60,7 +54,7 @@ router.get(
 
 router.post("/createCategory", auth, isAdmin, createCategory)
 router.get("/showAllCategories", showAllCategorys)
-// router.post("/getcategoryPageDetails", categoryPageDetails)
+router.post("/getCategoryPageDetails", categoryPageDetails);
 
 // // rating and review ********************************
 // router.post("/createrating", auth, isStudent, createRatingAndReview)
