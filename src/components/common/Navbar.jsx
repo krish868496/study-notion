@@ -62,12 +62,12 @@ const Navbar = () => {
                       <IoIosArrowDropdownCircle />
                       <div className="invisible z-20 absolute left-[50%] top-[30px] -translate-x-[43%]  flex flex-col rounded-md bg-richblack-5 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px]">
                         <div className="absolute left-1/2 top-0 h-6 w-6 rotate-45 rounded bg-richblack-5 z-10"></div>
-                        {subLinks.length ? (
+                        {subLinks.length > 0 ? (
                           subLinks.map((subLink, index) => {
                             return (
                               <Link
                                 key={index}
-                                to={subLink?.link}
+                                to={`/catalog/${subLink.name?.split(" ").join("-").toLowerCase()}`}
                                 className="text-richblack-800 font-semibold hover:text-yellow-25 px-5 py-1"
                               >
                                 {subLink?.name}
