@@ -18,6 +18,7 @@ exports.createCourse = async (req, res) => {
       status,
     } = req.body;
     // get thumbnail
+    console.log(courseName, courseDescription, whatYouWillLearn, price, tag, category, instructions, status, "req.body");
 
     const { thumbnailImage } = req.files;
     console.log(thumbnailImage, "Thumbnail");
@@ -56,13 +57,16 @@ exports.createCourse = async (req, res) => {
     }
 
     // check given tag is valid or not
-    const checkCategory = await Category.findById(category);
+    const checkCategory = await Category.findById({_id:category});
     if (!checkCategory) {
       return res.status(400).json({
         message: "invalid tag",
         success: false,
       });
     }
+
+    console.log(checkCategory, "CHECKING");
+
 
     // upload image to cloudinary
     const thumbnailImages = await uploadImageToCloudinary(
@@ -92,7 +96,16 @@ exports.createCourse = async (req, res) => {
       },
       { new: true }
     );
-    console.log(updatedUser, "updated user");
+    const updatedCategory = await Category.findByIdAndUpdate(
+      { _id: checkCategory._id },
+      {
+        $push: {
+          courses: newCourse._id,
+        },
+      },
+      { new: true }
+    );
+    console.log(updatedCategory, "updated category");
 
     return res.status(200).json({
       message: "course created successfully",
@@ -288,7 +301,6 @@ exports.getCourseDetails = async (req, res) => {
 exports.getAllInstructorCourses = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log(userId);
     const instructorDetails = await User.findById(userId, {
       accountType: "Instructor",
     })
