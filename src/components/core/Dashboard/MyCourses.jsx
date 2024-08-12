@@ -25,7 +25,6 @@ const MyCourses = () => {
                 <IconBtn 
                 text="Add Courses"
                 onClick = {() => navigate('/dashboard/add-course')}>
-                        {/* aad icon  */}
                 </IconBtn>
         </div>
         {courses && <CoursesTable courses = {courses} setCourses = {setCourses} />}
