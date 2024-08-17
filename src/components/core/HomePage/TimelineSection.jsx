@@ -58,7 +58,7 @@ const TimelineSection = () => {
           alt="timelineImage"
           className="object-cover shadow-white h-fit"
         />
-        <div className="absolute bg-caribbeangreen-700 flex lg:flex-row flex-col text-white uppercase py-7 lg:left-[50%] lg:-bottom-[15%] lg:translate-x-[-50%] lg:w-full w-[250px] lg:-translate-y-[50%] top-1/2 left-1/2 -translate-x-1/3 ">
+        <div className="absolute bg-caribbeangreen-700 flex lg:flex-row flex-col text-white uppercase py-7 lg:left-[50%]  lg:translate-x-[-50%] lg:w-full w-[250px] lg:-translate-y-[50%] lg:top-1/4 top-1/2 left-1/2 -translate-x-1/3 ">
           <div className="flex lg:gap-5 gap-10 items-center border-r border-caribbeangreen-300 px-7  my-5">
             <p className="text-3xl font-bold">10</p>
             <p className="text-cari font-bold text-sm text-caribbeangreen-300">
