@@ -23,6 +23,7 @@ import AddCourse from './components/core/Dashboard/AddCourse';
 import MyCourses from './components/core/Dashboard/MyCourses';
 import EditCourse from './components/core/Dashboard/EditCourse';
 import Catalog from './pages/Catalog';
+import CourseDetails from './pages/CourseDetails';
 
 function App() {
   const { user } = useSelector((state) => state.profile)
@@ -31,41 +32,49 @@ function App() {
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
       <Navbar />
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/catalog/:catalogName' element={<Catalog />} />
-        <Route path='/forgot-password' element={<ForgotPassword />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/verify-otp' element={<VerifyOtp />} />
-        <Route path='verify-email/:id' element={<VerifyEmail />} />
-        <Route path='/reset-password/:id' element={<ResetPassword />} />
-        <Route path='/change-password' element={<ChangePassword />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/catalog/:catalogName" element={<Catalog />} />
+        <Route path="/courses/:courseId" element={<CourseDetails />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="verify-email/:id" element={<VerifyEmail />} />
+        <Route path="/reset-password/:id" element={<ResetPassword />} />
+        <Route path="/change-password" element={<ChangePassword />} />
 
-        <Route element={<PrivateRoute><Dashboard /></PrivateRoute>} >
-          <Route path='/dashboard/my-profile' element={<MyProfile />} />
-          <Route path='/dashboard/settings' element={<Settings />} />
-
-          {
-            user?.accountType === ACCOUNT_TYPE.STUDENT && (
-              <>
-                {/* <Route path='/dashboard/view-course/:courseId/section/:sectionId/sub-section/:subSectionId' element={<VideoDetails />} /> */}
-                <Route path='/dashboard/enrolled-courses' element={<EnrolledCourses />} />
-                <Route path='/dashboard/cart' element={<Cart />} />
-              </>
-            )
+        <Route
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
           }
+        >
+          <Route path="/dashboard/my-profile" element={<MyProfile />} />
+          <Route path="/dashboard/settings" element={<Settings />} />
 
-          {
-            user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
-              <>               
-                <Route path='/dashboard/add-course' element={<AddCourse />} />
-                <Route path='/dashboard/my-courses' element={<MyCourses />} />
-                <Route path='/dashboard/edit-course/:courseId' element={<EditCourse />} />
-              </>
-            )
-          }
+          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+            <>
+              {/* <Route path='/dashboard/view-course/:courseId/section/:sectionId/sub-section/:subSectionId' element={<VideoDetails />} /> */}
+              <Route
+                path="/dashboard/enrolled-courses"
+                element={<EnrolledCourses />}
+              />
+              <Route path="/dashboard/cart" element={<Cart />} />
+            </>
+          )}
+
+          {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+            <>
+              <Route path="/dashboard/add-course" element={<AddCourse />} />
+              <Route path="/dashboard/my-courses" element={<MyCourses />} />
+              <Route
+                path="/dashboard/edit-course/:courseId"
+                element={<EditCourse />}
+              />
+            </>
+          )}
         </Route>
-
 
         {/* <Route element={<PrivateRoute><ViewCourse />
         </PrivateRoute>} >
@@ -80,10 +89,7 @@ function App() {
 
         </Route> */}
 
-
-
-
-        <Route path='*' element={<Error />} />
+        <Route path="*" element={<Error />} />
       </Routes>
       <Footer />
     </div>
