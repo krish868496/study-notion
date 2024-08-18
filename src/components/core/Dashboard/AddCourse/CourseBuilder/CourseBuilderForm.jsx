@@ -21,6 +21,7 @@ export default function CourseBuilderForm() {
   const [editSectionName, setEditSectionName] = useState(null);
   const [loading, setLoading] = useState(false);
   const { course, step } = useSelector((state) => state.course);
+  console.log(course, "course");
   const { token } = useSelector((state) => state.auth);
   const {
     register,
@@ -46,7 +47,9 @@ export default function CourseBuilderForm() {
       return;
     }
     // if everything is good
-    dispatch(setStep(4));
+    console.log("step")
+    dispatch(setStep(3));
+    console.log("step baad wala")
   };
   const goBack = () => {
     dispatch(setStep(1));
@@ -65,6 +68,7 @@ export default function CourseBuilderForm() {
         },
         token
       );
+      console.log(result);
     } else {
       result = await createSection(
         {
