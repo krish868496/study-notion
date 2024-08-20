@@ -33,9 +33,7 @@ const RenderCartCourses = () => {
           </div>
 
           <div>
-            <button
-            onClick={() => dispatch(course._id)}
-            >
+            <button onClick={() => dispatch(course._id)}>
               <RiDeleteBin6Line /> <span>Remove</span>
             </button>
             <p>Rs {course?.price}</p>
