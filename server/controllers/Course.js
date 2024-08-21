@@ -18,10 +18,8 @@ exports.createCourse = async (req, res) => {
       status,
     } = req.body;
     // get thumbnail
-    console.log(courseName, courseDescription, whatYouWillLearn, price, tag, category, instructions, status, "req.body");
 
     const { thumbnailImage } = req.files;
-    console.log(thumbnailImage, "Thumbnail");
 
     if (
       !courseName ||
@@ -57,16 +55,13 @@ exports.createCourse = async (req, res) => {
     }
 
     // check given tag is valid or not
-    const checkCategory = await Category.findById({_id:category});
+    const checkCategory = await Category.findById({ _id: category });
     if (!checkCategory) {
       return res.status(400).json({
         message: "invalid tag",
         success: false,
       });
     }
-
-    console.log(checkCategory, "CHECKING");
-
 
     // upload image to cloudinary
     const thumbnailImages = await uploadImageToCloudinary(
@@ -136,24 +131,40 @@ exports.editCourse = async (req, res) => {
     } = req.body;
     // get thumbnail
 
-    const { thumbnail } = req.files;
-
-    if (
-      !courseName ||
-      !courseDescription ||
-      !whatYouWillLearn ||
-      !price ||
-      // || !tag
-      !thumbnail ||
-      // || !category
-      !instructions ||
-      !courseId
-    ) {
-      return res.status(403).json({
-        message: "all fields are required",
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({
+        message: "Course not found",
         success: false,
       });
     }
+
+    let thumbnailUrl = course.thumbnail;
+    if (req.files !== null || (undefined && req.files.thumbnailImage)) {
+      // Upload new thumbnail to Cloudinary
+      const uploadedThumbnail = await uploadImageToCloudinary(
+        req.files.thumbnailImage,
+        process.env.FOLDER_NAME
+      );
+      thumbnailUrl = uploadedThumbnail?.secure_url;
+    }
+
+    // if (
+    //   !courseName ||
+    //   !courseDescription ||
+    //   !whatYouWillLearn ||
+    //   !price ||
+    //   !tag ||
+    //   !thumbnailImage ||
+    //   !category ||
+    //   !instructions ||
+    //   !courseId
+    // ) {
+    //   return res.status(403).json({
+    //     message: "all fields are required",
+    //     success: false,
+    //   });
+    // }
 
     if (!status || status === undefined) {
       status = "Draft";
@@ -164,7 +175,6 @@ exports.editCourse = async (req, res) => {
     const instructorDetails = await User.findById(userId, {
       accountType: "Instructor",
     });
-    console.log(instructorDetails, "instructor");
 
     if (!instructorDetails) {
       return res.status(401).json({
@@ -174,19 +184,23 @@ exports.editCourse = async (req, res) => {
     }
 
     // check given tag is valid or not
-    const checkCategory = await Category.findById(category);
-    if (!checkCategory) {
-      return res.status(400).json({
-        message: "invalid category",
-        success: false,
-      });
+    let checkCategory;
+    if (category) {
+       checkCategory = await Category.findById(category);
+      if (!checkCategory) {
+        return res.status(400).json({
+          message: "invalid category",
+          success: false,
+        });
+      }
     }
 
     // upload image to cloudinary
-    const thumbnailImages = await uploadImageToCloudinary(
-      thumbnail,
-      process.env.FOLDER_NAME
-    );
+    // const thumbnailImages = await uploadImageToCloudinary(
+    //   thumbnailImage,
+    //   process.env.FOLDER_NAME
+    // );
+
     const newCourse = await Course.findByIdAndUpdate(
       courseId,
       {
@@ -197,9 +211,9 @@ exports.editCourse = async (req, res) => {
         instructions,
         status: status,
         tag,
-        thumbnail: thumbnailImages.secure_url,
-        instructor: instructorDetails._id,
-        category: checkCategory._id,
+        thumbnail: thumbnailUrl,
+        instructor: instructorDetails?._id,
+        category: checkCategory?._id,
       },
       { new: true }
     );
@@ -252,7 +266,6 @@ exports.getCourseDetails = async (req, res) => {
   try {
     // get course id
     const { courseId } = req.params;
-    console.log(courseId);
     // find course details
     const courseDetails = await Course.findById(courseId)
       .populate({
@@ -263,9 +276,9 @@ exports.getCourseDetails = async (req, res) => {
         populate: {
           path: "courses",
           populate: {
-            path: "courseContent"
-          }
-        }
+            path: "courseContent",
+          },
+        },
       })
       .populate("category")
       // .populate("ratingAndReviews")
@@ -313,12 +326,14 @@ exports.getAllInstructorCourses = async (req, res) => {
     }
     console.log(instructorDetails);
     res.status(200).json({
-        count: instructorDetails.courses.length,
-        message: "all instructor courses",
-        success: true,
-        response: instructorDetails.courses,
-      });
+      count: instructorDetails.courses.length,
+      message: "all instructor courses",
+      success: true,
+      response: instructorDetails.courses,
+    });
   } catch (error) {
-        return res.status(500).json({ message: "internal server error", success: false });
+    return res
+      .status(500)
+      .json({ message: "internal server error", success: false });
   }
 };
