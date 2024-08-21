@@ -38,12 +38,7 @@ router.post(
   getAllInstructorCourses
 );
 // getFull Course details 
-router.get(
-  "/getFullCourseDetails/:courseId",
-  auth,
-  isInstructor,
-  getCourseDetails
-);
+router.get("/getCourseDetails/:courseId", getCourseDetails);
 // router.get("/getCourseDetails", getCourseDetails)
 // router.post("/verifysignature", verifySignature)
 
