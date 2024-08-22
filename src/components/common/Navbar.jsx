@@ -8,12 +8,13 @@ import ProfileDropDown from "../core/Auth/ProfileDropDown";
 import { apiConnector } from "../../services/apiconnector";
 import { categories } from "../../services/apis";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
+import { CiLogin } from "react-icons/ci";
+import { RiAccountCircleLine } from "react-icons/ri";
 
 const Navbar = () => {
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
   const { totalItems } = useSelector((state) => state.cart);
-  console.log(user);
 
   const [subLinks, setSubLinks] = useState([]);
   async function fetchSublinks() {
@@ -40,7 +41,7 @@ const Navbar = () => {
         <Link to={"/"}>
           <img src={logo} alt="logo" loading="lazy" className="" />
         </Link>
-        <nav>
+        <nav className="lg:block hidden">
           <ul className="flex gap-x-6 text-richblack-25">
             {NavbarLinks.map((link, index) => {
               return (
@@ -67,7 +68,10 @@ const Navbar = () => {
                             return (
                               <Link
                                 key={index}
-                                to={`/catalog/${subLink.name?.split(" ").join("-").toLowerCase()}`}
+                                to={`/catalog/${subLink.name
+                                  ?.split(" ")
+                                  .join("-")
+                                  .toLowerCase()}`}
                                 className="text-richblack-800 font-semibold hover:text-yellow-25 px-5 py-1"
                               >
                                 {subLink?.name}
@@ -102,8 +106,8 @@ const Navbar = () => {
         <div className="flex gap-x-4 items-center ">
           {user && user?.accountType !== "Instructor" && (
             <Link to={`/dashboard/cart`} className="relative text-richblack-5">
-              <AiOutlineShoppingCart />
-              {totalItems > 0 && (
+              <AiOutlineShoppingCart className="text-2xl" />
+              {totalItems > 0 && ( 
                 <span className="absolute top-0 right-0 text-2xl font-bold text-white bg-richblack-800 rounded-full w-5 h-5">
                   {totalItems}
                 </span>
@@ -112,12 +116,14 @@ const Navbar = () => {
           )}
           {token === null && (
             <Link to={"/login"}>
-              <p className="text-yellow-25">Login</p>
+              <p className="text-yellow-25 lg:block hidden">Login</p>
+              <CiLogin className="lg:hidden block text-richblack-5 text-2xl" title="login" />
             </Link>
           )}
           {token === null && (
             <Link to={"/signup"}>
-              <p className="text-yellow-25">Sign Up</p>
+              <p className="text-yellow-25 lg:block hidden">Sign Up</p>
+              <RiAccountCircleLine className="lg:hidden block text-richblack-5 text-2xl" title="sign up" />
             </Link>
           )}
           {token !== null && <ProfileDropDown />}
