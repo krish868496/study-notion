@@ -4,17 +4,17 @@ import { logout } from "../../../services/operations/authApi";
 import { useDispatch, useSelector } from "react-redux";
 import SidebarLink from "./SidebarLink";
 import { useNavigate } from "react-router-dom";
-import {  VscSignOut } from "react-icons/vsc";
+import { VscSignOut } from "react-icons/vsc";
 import ConfirmationModal from "../../common/ConfirmationModal";
 import { CiSettings } from "react-icons/ci";
+import { FaAngleDoubleLeft, FaBars } from "react-icons/fa";
 
 const Sidebar = () => {
-
   const { user, loading: profileLoading } = useSelector(
     (state) => state.profile
   );
-  console.log(sidebarLinks);
   const { loading: authLoading } = useSelector((state) => state.auth);
+  const [open, setOpen] = useState(false)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,9 +28,21 @@ const Sidebar = () => {
     );
   }
   return (
-    <div>
-      <div className="flex min-w-[222px] flex-col border-r-[1ppx] border-r-richblack-700 h-[calc(100vh-3.5rem)] bg-richblack-800 py-10">
-        <div className="flex-col flex">
+    <div className="relative">
+      <FaBars
+        onClick={() => setOpen(true)}
+        className="text-richblack-5 text-2xl absolute top-2 left-5"
+      />
+      <div
+        className={`lg:flex min-w-[222px] flex-col border-r-[1ppx] border-r-richblack-700 h-[calc(100vh-3.5rem)] bg-richblack-800 lg:py-10 py-5  absolute transition duration-0 ${
+          open ? "duration-700 translate-x-0" : "-translate-x-[222px] duration-700 "
+        }`}
+      >
+        <FaAngleDoubleLeft
+          onClick={() => setOpen(false)}
+          className="text-2xl text-richblack-5 absolute top-1 right-2"
+        />
+        <div className="flex-col flex mt-2">
           {sidebarLinks.map((link, index) => {
             if (link.type && user?.accountType !== link.type) return null;
             return (
