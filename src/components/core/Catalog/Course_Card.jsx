@@ -4,9 +4,10 @@ import RatingStars from "../../common/RatingStars";
 import GetAvgRating from "../../../utils/avgRating";
 
 const Course_Card = ({ course, Height }) => {
+  console.log(course?.thumbnail);
         const [avgReviewCount, setAvgReviewCount] = useState(0)
         useEffect(() => {
-          const count = GetAvgRating(course.ratingAndReviews);
+          const count = GetAvgRating(course?.ratingAndReview);
           setAvgReviewCount(count);
         }, [course])
         
@@ -28,8 +29,8 @@ const Course_Card = ({ course, Height }) => {
             </p>
             <div>
               <span>{avgReviewCount}</span>
-              <RatingStars Review_Count = {avgReviewCount} />
-              <span>{course?.ratingAndReviews?.length} Ratings</span>
+              <RatingStars Review_Count={avgReviewCount} />
+              <span>{course?.ratingAndReview?.length} Ratings</span>
             </div>
             <p>{course?.price}</p>
           </div>
