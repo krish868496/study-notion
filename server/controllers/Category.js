@@ -61,47 +61,62 @@ exports.showAllCategorys = async (req, res) => {
 
 // category page details
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 exports.categoryPageDetails = async (req, res) => {
   try {
     // get category id
     const { categoryId } = req.body;
-    console.log(categoryId);
-      const id = new mongoose.Types.ObjectId(categoryId.trim());
+    // convert string into object
+    const id = new mongoose.Types.ObjectId(categoryId.trim());
     // get course for specified categoryId
-    const selectedCategory = await Category.find(id)
+    const selectedCategory = await Category.findById({ _id: id })
       .populate({
-        path: "courses",  
-        match: {status: "Published"},
-        populate: "ratingAndReviews",
+        path: "courses",
+        match: { status: "Published" },
         populate: {
-          path: "Instructor"
-        }
+          path: "instructor",
+          populate: {
+            path: "courses"
+          }
+        },
       })
       .exec();
-      
+
+      console.log(selectedCategory, "selectedCategory")
+
     if (!selectedCategory) {
       return res.status(400).json({
         message: "category not found",
         success: false,
       });
     }
+    const categoriesExceptSelected = await Category.find({ _id: { $ne: id } });
 
-    const categoriesExceptSelected = await Category.find({_id: {$ne: id}})
-    console.log(categoriesExceptSelected, "excluded categories");
-    const differentCategories = Category.find(categoriesExceptSelected[getRandomInt(categoriesExceptSelected.length)], _id)
+    const randomIndex = getRandomInt(categoriesExceptSelected.length);
+    const differentCategory = await Category.findById(
+      categoriesExceptSelected[randomIndex]._id
+    )
       .populate({
         path: "courses",
-        match: {status: "Published"},
+        match: { status: "Published" },
       })
       .exec();
 
-      const allCourses = allCategories.flatMap((category) => category.courses)
-      const mostSellingCourses = allCourses.sort((a, b) => b.sold - a.sold).slice(0,10)
+    const allCourses = categoriesExceptSelected.flatMap(
+      (category) => category.courses
+    );
+
+    const mostSellingCourses = allCourses
+      .sort((a, b) => b.sold - a.sold)
+      .slice(0, 10);
     return res.status(200).json({
       success: true,
-     data: {
+      data: {
         selectedCategory: selectedCategory,
-        differentCategories: differentCategories,
+        differentCategory: differentCategory,
         mostSellingCourses: mostSellingCourses,
       },
     });
