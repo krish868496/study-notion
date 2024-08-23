@@ -57,7 +57,7 @@ function App() {
 
           {user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <>
-              {/* <Route path='/dashboard/view-course/:courseId/section/:sectionId/sub-section/:subSectionId' element={<VideoDetails />} /> */}
+              <Route path='/dashboard/view-course/:courseId/section/:sectionId/sub-section/:subSectionId' element={<VideoDetails />} />
               <Route
                 path="/dashboard/enrolled-courses"
                 element={<EnrolledCourses />}
@@ -78,18 +78,6 @@ function App() {
           )}
         </Route>
 
-        {/* <Route element={<PrivateRoute><ViewCourse />
-        </PrivateRoute>} >
-          {
-            user?.accountType = ACCOUNT_TYPE.STUDENT && (
-              <>
-                <Route path='/view-course/:courseId/section/:sectionId/sub-section/:subSectionId' element={<VideoDetails />} />
-                <Route path='/dashboard/enrolled-courses' element={<EnrolledCourses />} />
-              </>
-            )
-          }
-
-        </Route> */}
 
         <Route element={
           <PrivateRoute>
