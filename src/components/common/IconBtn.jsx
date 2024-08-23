@@ -8,16 +8,17 @@ const IconBtn = ({
   outline = false,
   customClasses,
   type,
+  icon
 }) => {
   return (
     <button onClick={onClick} disabled={disabled} type={type}>
       {children ? (
         <>
-          <span className="">{text}</span>
+          <span className="text-richblack-5">{icon ? icon : text}</span>
           {children}
         </>
       ) : (
-        <span className="text-richblack-5">{text}</span>
+        <span className="text-richblack-5">{icon ? icon : text}</span>
       )}
     </button>
   );
