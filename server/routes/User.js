@@ -17,10 +17,10 @@ router.post('/sendotp', sendOTP)
 // router.post('/changepassword', auth, changePassword) 
 
 // router for generating reset password 
-router.post("/reset-password-token", resetPasswordToken)
+router.post("/reset-password-token", auth, resetPasswordToken)
 
 // router for resetting password after verification
-router.post("/reset-password", resetPassword)
+router.post("/reset-password", auth, resetPassword)
 
 // change password after verification 
 router.post("/change-password", auth, changePassword)
