@@ -2,18 +2,18 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import IconBtn from "../../common/IconBtn";
+import { FaUserEdit } from "react-icons/fa";
 
 const MyProfile = () => {
   const { user } = useSelector((state) => state.profile);
-  console.log(user, "user");
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col lg:gap-10 gap-5">
       <h1 className="lg:text-[30px] lg:leading-[38px] text-richblack-5 font-medium">
         My Profile
       </h1>
-      <div className=" rounded-lg border-[1px] border-richblack-800 p-6 flex gap-5 justify-between items-center bg-richblack-800">
-        <div className="flex lg:gap-4 items-center">
+      <div className=" rounded-lg border-[1px] border-richblack-800 lg:p-6 p-3 flex gap-5 justify-between items-center bg-richblack-800">
+        <div className="flex lg:gap-4 gap-3 items-center">
           <img
             src={user?.image}
             alt={`profile-${user?.image}`}
@@ -28,7 +28,7 @@ const MyProfile = () => {
           </div>
         </div>
         <IconBtn
-          text={"Edit"}
+          icon={<FaUserEdit className="text-2xl" />}
           onClick={() => navigate("/dashboard/settings")}
         />
       </div>
@@ -37,7 +37,7 @@ const MyProfile = () => {
         <div className="flex justify-between">
           <p className="font-bold text-lg leading-6 text-richblack-5">About</p>
           <IconBtn
-            text="Edit"
+            icon={<FaUserEdit className="text-2xl" />}
             onClick={() => {
               navigate("/dashboard/settings");
             }}
@@ -54,7 +54,7 @@ const MyProfile = () => {
             Personal Details
           </p>
           <IconBtn
-            text="Edit"
+            icon={<FaUserEdit className="text-2xl" />}
             onClick={() => {
               navigate("/dashboard/settings");
             }}
@@ -64,11 +64,13 @@ const MyProfile = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <tbody>
               <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
+                <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
                   First Name
-                  <div className="text-richblack-5 font-bold text-sm leading-5">{user?.firstName}</div>
+                  <div className="text-richblack-5 font-bold text-sm leading-5">
+                    {user?.firstName}
+                  </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
+                <td className="lg:px-6 px-2 py-2 lg:py- whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
                   Last Name
                   <div className="text-richblack-5 font-bold text-sm leading-5">
                     {user?.lastName ?? "Add last name"}
@@ -76,11 +78,13 @@ const MyProfile = () => {
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
+                <td className="lg:px-6 px-2 py-2 lg:py- whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
                   Email
-                  <div className="text-richblack-5 font-bold text-sm leading-5">{user?.email}</div>
+                  <div className="text-richblack-5 font-bold text-sm leading-5">
+                    {user?.email}
+                  </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
+                <td className="lg:px-6 px-2 py-2 lg:py- whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
                   Phone Number
                   <div className="text-richblack-5 font-bold text-sm leading-5">
                     {user?.additionalDetails?.contactNumber ??
@@ -89,13 +93,13 @@ const MyProfile = () => {
                 </td>
               </tr>
               <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
+                <td className="lg:px-6 px-2 py-2 lg:py- whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
                   Gender
                   <div className="text-richblack-5 font-bold text-sm leading-5">
                     {user?.additionalDetails?.gender ?? "Add gender"}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
+                <td className="lg:px-6 px-2 py-2 lg:py- whitespace-nowrap text-sm font-medium text-gray-900 text-richblack-300">
                   Date of Birth
                   <div className="text-richblack-5 font-bold text-sm leading-5">
                     {user?.additionalDetails?.dateOfBirth ??
