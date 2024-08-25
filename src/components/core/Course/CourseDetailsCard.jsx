@@ -41,11 +41,11 @@ const CourseDetailsCard = ({
   return (
     <div>
       <div className="">
-        <img
+        {/* <img
           src={thumbnail}
           alt=""
           className="max-h-[300px] min-h-[180px] w-[400px] rounded-xl"
-        />
+        /> */}
         <p>Rs. {price}</p>
         <button
           onClick={
