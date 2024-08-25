@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CTAButton from "../../HomePage/Button";
 import { useForm } from "react-hook-form";
@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 const ChangeProfilePicture = () => {
   const { user } = useSelector((state) => state.profile);
   console.log(user);
+  const [image, setImage] = useState(null);
   const {
     register,
     handleSubmit,
@@ -21,39 +22,53 @@ const ChangeProfilePicture = () => {
     setValue("gender", user?.gender);
     setValue("phone", user?.phone);
     setValue("email", user?.email);
+    setValue("image", user?.image);
   }, []);
 
-  const onsubmit = () => {
-    console.log(data);
-  };
+  const onsubmit = () => {};
   return (
     <div>
-      <div
-        className="flex items-center justify-between rounded-md border-[1px] 
+      <div className="">
+        <div
+          className=" gap-x-4 flex p-2 my-5 rounded-md border-[1px] 
        border-richblack-700 bg-richblack-800  text-richblack-5"
-      ></div>
-      <div className="flex items-center gap-x-4">
-        <img src="" alt="" />
-        <div className="space-y-2">
-          <p>Change Profile Picture</p>
-          <div className="flex">
-            <CTAButton active={true}>Change</CTAButton>
-            <CTAButton>Remove</CTAButton>
+        >
+          <img src={user?.image} alt="profile image" className="" />
+
+          {errors.image && (
+            <span className="text-red-500">image is required</span>
+          )}
+          <div className="space-y-2">
+            <p>Change Profile Picture</p>
+            <div className="flex">
+              <input
+                type="file"
+                // onChange={handleImageChange}
+                placeholder="Change"
+                name="image"
+                id="image"
+                {...register("image", { required: true })}
+              />
+              <CTAButton>Remove</CTAButton>
+            </div>
           </div>
         </div>
-        <div className=" rounded-lg border-[1px] border-richblack-800 lg:p-6 p-3 flex gap-5 justify-between items-center bg-richblack-800">
-          <h2>Profile Information</h2>
+        <div
+          className="flex flex-col my-5 justify-between rounded-md border-[1px] 
+       border-richblack-700 bg-richblack-800  text-richblack-5"
+        >
+          <h2 className="m-4">Profile Information</h2>
           <form
             onSubmit={handleSubmit(onsubmit)}
             className="rounded-md border-richblack-700 bg-richblack-800 p-6 space-y-8"
           >
-            <div className="flex">
-              <div className="">
+            <div className="flex gap-x-10">
+              <div className="flex flex-col justify-between">
                 <label htmlFor="">
                   First Name <sup>*</sup>{" "}
                 </label>
                 <input
-                className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[220px] focus:outline-none"
+                  className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[270px] lg:w-[320px] focus:outline-none"
                   type="text"
                   name="firstName"
                   id="firstName"
@@ -64,12 +79,12 @@ const ChangeProfilePicture = () => {
                   <span className="text-red-500">First name is required</span>
                 )}
               </div>
-              <div>
+              <div className="flex flex-col justify-between">
                 <label htmlFor="">
                   Last Name <sup>*</sup>{" "}
                 </label>
                 <input
-                className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[220px] focus:outline-none"
+                  className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[270px] lg:w-[320px] focus:outline-none"
                   type="text"
                   name="lastName"
                   id="lastName"
@@ -81,13 +96,13 @@ const ChangeProfilePicture = () => {
                 )}
               </div>
             </div>
-            <div className="flex">
-              <div>
+            <div className="flex gap-x-10">
+              <div className="flex flex-col justify-between">
                 <label htmlFor="">
                   Date of Birth <sup>*</sup>{" "}
                 </label>
                 <input
-                className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[220px] focus:outline-none"
+                  className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[270px] lg:w-[320px] focus:outline-none"
                   type="date"
                   name="date"
                   id="date"
@@ -98,12 +113,12 @@ const ChangeProfilePicture = () => {
                   <span className="text-red-500">date is required</span>
                 )}
               </div>
-              <div>
+              <div className="flex flex-col justify-between">
                 <label htmlFor="">
                   Gender <sup>*</sup>{" "}
                 </label>
                 <input
-                className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[220px] focus:outline-none"
+                  className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[270px] lg:w-[320px] focus:outline-none"
                   type="radio"
                   name="gender"
                   id="gender"
@@ -114,13 +129,13 @@ const ChangeProfilePicture = () => {
                 )}
               </div>
             </div>
-            <div className="flex">
-              <div>
+            <div className="flex gap-x-10">
+              <div className="flex flex-col justify-between">
                 <label htmlFor="">
                   Phone Number <sup>*</sup>{" "}
                 </label>
                 <input
-                className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[220px] focus:outline-none"
+                  className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[270px] lg:w-[320px] focus:outline-none"
                   type="phone"
                   name="phone"
                   id="phone"
@@ -131,12 +146,12 @@ const ChangeProfilePicture = () => {
                   <span className="text-red-500">phone number is required</span>
                 )}
               </div>
-              <div>
+              <div className="flex flex-col justify-between">
                 <label htmlFor="">
                   Email <sup>*</sup>{" "}
                 </label>
                 <input
-                className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[220px] focus:outline-none"
+                  className="shadow-custom-input bg-[#161D29] px-6 py-2 rounded-md w-[270px] lg:w-[320px] focus:outline-none"
                   type="email"
                   name="email"
                   id="email"
