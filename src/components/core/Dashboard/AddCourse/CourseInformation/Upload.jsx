@@ -6,12 +6,12 @@ const Upload = ({
   register,
   setValue,
   errors,
-  video,
-  viewData,
-  editData,
+  video = false,
+  viewData = false,
+  editData = false,
+  className = "w-full h-auto",
 }) => {
   const [preview, setPreview] = useState(viewData || editData || null);
-  const [file, setFile] = useState(null);
 
   useEffect(() => {
     // Register the input with react-hook-form
@@ -29,7 +29,6 @@ const Upload = ({
     if (selectedFile) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFile(selectedFile);
         setPreview(reader.result);
         setValue(name, selectedFile);
       };
@@ -48,7 +47,7 @@ const Upload = ({
           {video ? (
             <video src={preview} controls className="w-full h-auto" />
           ) : (
-            <img src={preview} alt="Preview" className="w-full h-auto" />
+            <img src={preview} alt="Preview" className={className} />
           )}
         </div>
       )}
