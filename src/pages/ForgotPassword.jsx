@@ -13,7 +13,6 @@ const ForgotPassword = () => {
   // const [email, setEmail] = useState("");
 
   const handleSubmit = async (values) => {
-    console.log(values);
     const {email} = values;
     const { data } = await apiConnector("POST", endpoints.RESETPASSTOKEN_API, {email});
   };
@@ -31,7 +30,7 @@ const ForgotPassword = () => {
           <p className="lg-w-[444px] ">
             {!emailSent
               ? "Have no fear. We’ll email you instructions to reset your password. If you dont have access to your email we can try account recovery"
-              : `We have sent the reset email to ${email}`}
+              : `We have sent the reset email to `}
           </p>
           <Formik
             initialValues={{
