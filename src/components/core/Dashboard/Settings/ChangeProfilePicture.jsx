@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CTAButton from "../../HomePage/Button";
 import { useForm } from "react-hook-form";
+import Upload from "../AddCourse/CourseInformation/Upload";
 
 const ChangeProfilePicture = () => {
   const { user } = useSelector((state) => state.profile);
   console.log(user);
-  const [image, setImage] = useState(null);
   const {
     register,
     handleSubmit,
@@ -33,25 +33,18 @@ const ChangeProfilePicture = () => {
           className=" gap-x-4 flex p-2 my-5 rounded-md border-[1px] 
        border-richblack-700 bg-richblack-800  text-richblack-5"
         >
-          <img src={user?.image} alt="profile image" className="" />
-
-          {errors.image && (
-            <span className="text-red-500">image is required</span>
-          )}
-          <div className="space-y-2">
-            <p>Change Profile Picture</p>
-            <div className="flex">
-              <input
-                type="file"
-                // onChange={handleImageChange}
-                placeholder="Change"
-                name="image"
-                id="image"
-                {...register("image", { required: true })}
-              />
-              <CTAButton>Remove</CTAButton>
-            </div>
-          </div>
+          <Upload
+            name="courseImage"
+            label="Course Image"
+            register={register}
+            errors={errors}
+            setValue={setValue}
+            video={false}
+            viewData={false}
+            editData={user?.image}
+            className="w-8 h-8 rounded-full"
+          />
+          <CTAButton>Remove</CTAButton>
         </div>
         <div
           className="flex flex-col my-5 justify-between rounded-md border-[1px] 
