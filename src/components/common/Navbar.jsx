@@ -107,7 +107,7 @@ const Navbar = () => {
           {user && user?.accountType !== "Instructor" && (
             <Link to={`/dashboard/cart`} className="relative text-richblack-5">
               <AiOutlineShoppingCart className="text-2xl" />
-              {totalItems > 0 && ( 
+              {totalItems > 0 && (
                 <span className="absolute top-0 right-0 text-2xl font-bold text-white bg-richblack-800 rounded-full w-5 h-5">
                   {totalItems}
                 </span>
@@ -117,13 +117,19 @@ const Navbar = () => {
           {token === null && (
             <Link to={"/login"}>
               <p className="text-yellow-25 lg:block hidden">Login</p>
-              <CiLogin className="lg:hidden block text-richblack-5 text-2xl" title="login" />
+              <CiLogin
+                className="lg:hidden block text-richblack-5 text-2xl"
+                title="login"
+              />
             </Link>
           )}
           {token === null && (
             <Link to={"/signup"}>
               <p className="text-yellow-25 lg:block hidden">Sign Up</p>
-              <RiAccountCircleLine className="lg:hidden block text-richblack-5 text-2xl" title="sign up" />
+              <RiAccountCircleLine
+                className="lg:hidden block text-richblack-5 text-2xl"
+                title="sign up"
+              />
             </Link>
           )}
           {token !== null && <ProfileDropDown />}
