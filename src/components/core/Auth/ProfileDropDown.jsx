@@ -13,20 +13,20 @@ const ProfileDropDown = () => {
   const ref = useRef(null);
   // useOnClickOutside(ref, () => setOpen(false));
   // if (!user) return null;
-    const boxRef = useRef(null);
+  const boxRef = useRef(null);
 
-    const handleClickOutside = (event) => {
-      if (boxRef.current && !boxRef.current.contains(event.target)) {
-        setOpen(false);
-      }
+  const handleClickOutside = (event) => {
+    if (boxRef.current && !boxRef.current.contains(event.target)) {
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-
-    useEffect(() => {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
+  }, []);
 
   return (
     <button ref={boxRef} className="relative" onClick={() => setOpen(true)}>
