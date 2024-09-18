@@ -28,9 +28,9 @@ const ChangeProfilePicture = () => {
   const onsubmit = () => {};
   return (
     <div>
-      <div className="">
+      <div className="gap-2">
         <div
-          className=" gap-x-4 flex p-2 my-5 rounded-md border-[1px] 
+          className=" gap-4 flex items-center p-2 my-5 rounded-md border-[1px] 
        border-richblack-700 bg-richblack-800  text-richblack-5"
         >
           <Upload
@@ -43,8 +43,9 @@ const ChangeProfilePicture = () => {
             viewData={false}
             editData={user?.image}
             className="w-8 h-8 rounded-full"
+            fileName={true}
           />
-          <CTAButton>Remove</CTAButton>
+          <button className="px-4 py-1.5 bg-richblack-500 text-richblack-5 rounded-md mt-5">Remove</button>
         </div>
         <div
           className="flex flex-col my-5 justify-between rounded-md border-[1px] 
