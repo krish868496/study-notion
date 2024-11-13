@@ -1,8 +1,21 @@
 const Course = require("../models/Course");
 // const Tag = require("../models/Tag")
 const Category = require("../models/Category");
-const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { uploadFileToCloudinary } = require("../utils/imageUploader");
 const User = require("../models/User");
+
+
+
+// to remove all courses from database 
+
+exports.deleteAllCourses = async (req, res) => {
+  try {
+    await Course.deleteMany({});
+    res.status(200).json({ message: "All courses deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting courses", error });
+  }
+};
 
 exports.createCourse = async (req, res) => {
   try {
@@ -64,7 +77,7 @@ exports.createCourse = async (req, res) => {
     }
 
     // upload image to cloudinary
-    const thumbnailImages = await uploadImageToCloudinary(
+    const thumbnailImages = await uploadFileToCloudinary(
       thumbnailImage,
       process.env.FOLDER_NAME
     );
@@ -142,7 +155,7 @@ exports.editCourse = async (req, res) => {
     let thumbnailUrl = course.thumbnail;
     if (req.files !== null || (undefined && req.files.thumbnailImage)) {
       // Upload new thumbnail to Cloudinary
-      const uploadedThumbnail = await uploadImageToCloudinary(
+      const uploadedThumbnail = await uploadFileToCloudinary(
         req.files.thumbnailImage,
         process.env.FOLDER_NAME
       );
@@ -196,7 +209,7 @@ exports.editCourse = async (req, res) => {
     }
 
     // upload image to cloudinary
-    // const thumbnailImages = await uploadImageToCloudinary(
+    // const thumbnailImages = await uploadFileToCloudinary(
     //   thumbnailImage,
     //   process.env.FOLDER_NAME
     // );
