@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router()
 
-const { createCourse, editCourse, getCourseDetails, showAllCourses, getAllInstructorCourses } = require("../controllers/Course")
+const { createCourse, editCourse, getCourseDetails, showAllCourses, getAllInstructorCourses, deleteAllCourses } = require("../controllers/Course")
 // category controller import 
 const {  createCategory, showAllCategorys, categoryPageDetails } = require("../controllers/Category")
 
@@ -55,6 +55,10 @@ router.post("/getCategoryPageDetails", categoryPageDetails);
 // router.post("/createrating", auth, isStudent, createRatingAndReview)
 // router.get("/getaverageRating", getAverageRating)
 // router.post("/getReviews", getAllRating)
+
+
+// to delete all the courses from database 
+router.delete("/deleteAllCourses", deleteAllCourses)
 
 module.exports = router;
 
