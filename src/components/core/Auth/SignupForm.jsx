@@ -19,6 +19,8 @@ const SignupForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  console.log(accountType)
+
 
   const handleSubmit = async (values) => {
     const {
@@ -46,9 +48,6 @@ const SignupForm = () => {
     dispatch(sendOtp(email, navigate));
     
   };
-   const handleAccountType = (data) => {
-     setAccountType(data);
-   };
 
   // const validationSchema = Yup.object().shape({
   //   accountType: Yup.string().required("Account type is required"),
@@ -70,7 +69,7 @@ const SignupForm = () => {
       <div className="bg-[#161D29] rounded-full w-[210px] mb-10 p-1 gap-1 flex">
         {accountTypeData?.map((data, index) => (
           <button
-            onClick={() => handleAccountType(data)}
+            onClick={() => setAccountType(data)}
             key={index}
             className={`${
               accountType === data ? "bg-[#000814] " : "bg-[#161D29]"
