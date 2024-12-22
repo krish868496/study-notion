@@ -1,13 +1,12 @@
 import React from "react";
 import { FaCheck } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import CourseInformationForm from './CourseInformation/CourseInformationForm'
+import CourseInformationForm from "./CourseInformation/CourseInformationForm";
 import CourseBuilderForm from "./CourseBuilder/CourseBuilderForm";
 import PublishCourse from "./PublishCourse";
 
 const RenderSteps = () => {
   const { step } = useSelector((state) => state.course);
-  console.log(step, "steps rendered");
 
   const steps = [
     {
@@ -26,9 +25,8 @@ const RenderSteps = () => {
   return (
     <div>
       {steps.map((step) => (
-        <div>
+        <div key={step.id}>
           <div
-            key={step.id}
             className={`step ${
               step.id === step
                 ? "bg-yellow-900 border-yellow-50 text-yellow-50"
@@ -41,13 +39,17 @@ const RenderSteps = () => {
         </div>
       ))}
 
-      <div>
+      <div className="flex items-center justify-center my-10">
         {steps.map((step) => (
-          <>
-            <div>
-              <p>{step?.title}</p>
-            </div>
-          </>
+          <div
+            key={step.id}
+            className="text-richblue-5 w-[220px] flex flex-col items-center"
+          >
+            <p className="flex items-center justify-center w-8 h-8 border rounded-full border-richblack-600 bg-richblack-600">
+              {step?.id}
+            </p>
+            <p>{step?.title}</p>
+          </div>
         ))}
       </div>
 

@@ -31,7 +31,7 @@ const CourseInformationForm = () => {
   const [courseCategories, setCourseCategories] = useState([]);
 
   const getCategories = async () => {
-    setLoading(true);
+    // setLoading(true);
     const categories = await fetchCourseCategories();
     if (categories.length > 0) {
       setCourseCategories(categories);
@@ -63,7 +63,7 @@ const CourseInformationForm = () => {
       currentValues.courseCategory._id !== course.category._id ||
       currentValues.courseImage !== course.thumbnail ||
       currentValues.courseRequirements.toString() !==
-      course.instructions.toString()
+        course.instructions.toString()
     )
       return true;
     else return false;
@@ -111,7 +111,7 @@ const CourseInformationForm = () => {
             "instructions",
             JSON.stringify(data?.courseRequirements)
           );
-           formData?.append("status", COURSE_STATUS.DRAFT);
+          formData?.append("status", COURSE_STATUS.DRAFT);
         }
 
         setLoading(true);
@@ -151,10 +151,13 @@ const CourseInformationForm = () => {
     <>
       <form
         onSubmit={handleSubmit(onsubmit)}
-        className="rounded-md border-richblack-700 bg-richblack-800 p-6 space-y-8"
+        className="rounded-md border-richblack-700 bg-richblack-800 p-6 space-y-8 w-[665px]"
       >
-        <div>
-          <label htmlFor="">
+        <div className="flex flex-col">
+          <label
+            htmlFor=""
+            className="font-normal text-[14px] leading-6 text-richblack-5"
+          >
             Course Title <sup>*</sup>{" "}
           </label>
           <input
@@ -162,6 +165,7 @@ const CourseInformationForm = () => {
             name="courseTitle"
             id="courseTitle"
             placeholder="Enter course title"
+            className="w-[617px] py-6 px-4 text-richblack-50 bg-richblack-600 rounded-xl shadow-custom-input focus:border-none focus:outline-none"
             {...register("courseTitle", { required: true })}
           />
           {errors.courseTitle && (
@@ -170,7 +174,10 @@ const CourseInformationForm = () => {
         </div>
 
         <div>
-          <label htmlFor="">
+          <label
+            htmlFor=""
+            className="font-normal text-[14px] leading-6 text-richblack-5"
+          >
             Course Short Description <sup>*</sup>{" "}
           </label>
           <textarea
@@ -178,7 +185,7 @@ const CourseInformationForm = () => {
             id="courseShortDesc"
             placeholder="Enter course description"
             {...register("courseShortDesc", { required: true })}
-            className="min-w-[140px] w-full"
+            className="w-[617px] py-6 px-4 text-richblack-50 bg-richblack-600 rounded-xl shadow-custom-input focus:border-none focus:outline-none h-[127px]"
           />
           {errors.courseShortDesc && (
             <span className="text-red-500">
@@ -188,10 +195,14 @@ const CourseInformationForm = () => {
         </div>
 
         <div className="relative">
-          <label htmlFor="">
+          <label
+            htmlFor=""
+            className="font-normal text-[14px] leading-6 text-richblack-5"
+          >
             Course Price <sup>*</sup>{" "}
           </label>
-          <textarea
+          <input
+            type="text"
             name="coursePrice"
             id="coursePrice"
             placeholder="Enter course price"
@@ -199,16 +210,19 @@ const CourseInformationForm = () => {
               required: true,
               valueAsNumber: true,
             })}
-            className="min-w-[140px] w-full"
+            className="w-[617px] py-6 px-4 pl-14 text-richblack-50 bg-richblack-600 rounded-xl shadow-custom-input focus:border-none focus:outline-none"
           />
-          <HiOutlineCurrencyRupee className="absolute top-1/2 text-richblack-400" />
+          <HiOutlineCurrencyRupee className="absolute w-6 h-6 mx-4 top-1/2 text-richblack-400" />
           {errors.courseShortDesc && (
             <span className="text-red-500">Course price is required</span>
           )}
         </div>
 
         <div>
-          <label htmlFor="courseCategory">
+          <label
+            htmlFor="courseCategory"
+            className="font-normal text-[14px] leading-6 text-richblack-5 flex flex-col"
+          >
             Course Category <sup>*</sup>{" "}
           </label>
           <select
@@ -216,13 +230,18 @@ const CourseInformationForm = () => {
             name="courseCategory"
             defaultValue=""
             {...register("courseCategory", { required: true })}
+            className="w-[617px] py-6 px-4 text-richblack-50 bg-richblack-600 rounded-xl shadow-custom-input focus:border-none focus:outline-none cursor-pointer "
           >
             <option disabled value="">
               Choose a Category
             </option>
             {!loading &&
               courseCategories.map((category, index) => (
-                <option value={category?._id} key={index}>
+                <option
+                  value={category?._id}
+                  key={index}
+                  className="w-[617px] py-6 px-4 text-richblack-50 bg-richblack-600 rounded-xl shadow-custom-input focus:border-none focus:outline-none"
+                >
                   {category?.name}
                 </option>
               ))}
@@ -254,13 +273,18 @@ const CourseInformationForm = () => {
 
         {/* Benefits of the course  */}
         <div>
-          <label htmlFor="">Benefits of the course</label>
+          <label
+            htmlFor=""
+            className="font-normal text-[14px] leading-6 text-richblack-5"
+          >
+            Benefits of the course
+          </label>
           <textarea
             name=""
             id="courseBenefits"
             placeholder="Enter Benefits of the course"
             {...register("courseBenefits", { required: true })}
-            className="min-h-[130px] w-full"
+            className="w-[617px] py-6 px-4 text-richblack-50 bg-richblack-600 rounded-xl shadow-custom-input focus:border-none focus:outline-none"
           />
           {errors.courseBenefits && (
             <span>Benefits of the course are required</span>

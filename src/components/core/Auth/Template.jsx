@@ -18,7 +18,7 @@ const Template = ({heading, subHeading1, subHeading2, image, type}) => {
         {type === "login" ? <LoginForm /> : <SignupForm />}
       </div>
       <div>
-      <img src={image} alt={`${type} image`} className='bg-cover lg:w-[585px] lg:h-[531px]' />
+      <img src={image} alt={`${type} image`} className='bg-cover lg:w-[585px] lg:h-[531px] flex-shrink-0' />
       </div>
     </div>
   );

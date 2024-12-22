@@ -46,10 +46,17 @@ exports.showAllCategorys = async (req, res) => {
         description: true,
       }
     );
+    if(allCategorys.length > 0){
     return res.status(200).json({
       success: true,
       allCategorys: allCategorys,
     });
+  }else{
+    return res.status(200).json({
+      success: true,
+      message: "No categories found",
+    });
+  }
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -79,13 +86,11 @@ exports.categoryPageDetails = async (req, res) => {
         populate: {
           path: "instructor",
           populate: {
-            path: "courses"
-          }
+            path: "courses",
+          },
         },
       })
       .exec();
-
-      console.log(selectedCategory, "selectedCategory")
 
     if (!selectedCategory) {
       return res.status(400).json({
@@ -93,7 +98,17 @@ exports.categoryPageDetails = async (req, res) => {
         success: false,
       });
     }
-    const categoriesExceptSelected = await Category.find({ _id: { $ne: id } });
+    const categoriesExceptSelected = await Category.find({ _id: { $ne: id } })
+      .populate({
+        path: "courses", // Field to populate
+        match: { status: "Published" }, // Only include courses with status 'Published'
+        populate: {
+          path: "instructor",
+          populate: { path: "courses" }, // Populate additional fields, like instructor
+        }, // Populate additional fields, like instructor
+      })
+      .exec();
+    console.log(categoriesExceptSelected, "category except selected");
 
     const randomIndex = getRandomInt(categoriesExceptSelected.length);
     const differentCategory = await Category.findById(
@@ -108,10 +123,13 @@ exports.categoryPageDetails = async (req, res) => {
     const allCourses = categoriesExceptSelected.flatMap(
       (category) => category.courses
     );
+    console.log(allCourses, "allCourses");
 
     const mostSellingCourses = allCourses
       .sort((a, b) => b.sold - a.sold)
       .slice(0, 10);
+
+    console.log(mostSellingCourses, "mostSellingCourses");
     return res.status(200).json({
       success: true,
       data: {

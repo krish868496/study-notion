@@ -36,6 +36,13 @@ export const sidebarLinks = [
   },
   {
     id: 5,
+    name: "Saved Course",
+    path: "/dashboard/saved-courses",
+    type: ACCOUNT_TYPE.INSTRUCTOR,
+    icon: <VscAdd />,
+  },
+  {
+    id: 5,
     name: "Enrolled Course",
     path: "/dashboard/enrolled-course",
     type: ACCOUNT_TYPE.STUDENT,

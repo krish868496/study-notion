@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router()
 
-const { createCourse, editCourse, getCourseDetails, showAllCourses, getAllInstructorCourses, deleteAllCourses } = require("../controllers/Course")
+const { createCourse, editCourse, getCourseDetails,  showAllCourses, getAllInstructorCourses, deleteAllCourses, getFullCourseDetails } = require("../controllers/Course")
 // category controller import 
 const {  createCategory, showAllCategorys, categoryPageDetails } = require("../controllers/Category")
 
@@ -39,7 +39,12 @@ router.post(
 );
 // getFull Course details 
 router.get("/getCourseDetails/:courseId", getCourseDetails);
-// router.get("/getCourseDetails", getCourseDetails)
+router.get(
+  "/getFullCourseDetails/:courseId",
+  auth,
+  isInstructor,
+  getFullCourseDetails
+);
 // router.post("/verifysignature", verifySignature)
 
 
@@ -57,7 +62,7 @@ router.post("/getCategoryPageDetails", categoryPageDetails);
 // router.post("/getReviews", getAllRating)
 
 
-// to delete all the courses from database 
+// to delete all the courses from database need to add authentication for admin so that admin can delete the courses
 router.delete("/deleteAllCourses", deleteAllCourses)
 
 module.exports = router;

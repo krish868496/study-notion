@@ -41,10 +41,10 @@ const NestedView = ({ handleChangeEditSectionName }) => {
       sectionId,
       token,
     });
-   const updatedCourse = course?.courseContent?.map((section) =>
+    const updatedCourse = course?.courseContent?.map((section) =>
       section?._id === sectionId ? result : section
     );
-    const updatedCourseContent = {...course, courseContent: updatedCourse};
+    const updatedCourseContent = { ...course, courseContent: updatedCourse };
     if (result) {
       // todo extra
       dispatch(setCourse(updatedCourseContent));
@@ -54,10 +54,10 @@ const NestedView = ({ handleChangeEditSectionName }) => {
 
   return (
     <div>
-      <div className="rounded-lg bg-richblack-700 p-6">
+      <div className="p-6 rounded-lg bg-richblack-700">
         {course?.courseContent?.map((section) => (
           <details key={section._id} open>
-            <summary className="flex items-center justify-between gap-x-3 border-b-2">
+            <summary className="flex items-center justify-between border-b-2 gap-x-3">
               <div className="flex items-center gap-x-3">
                 <RxDropdownMenu />
                 <p>{section?.sectionName}</p>
@@ -95,11 +95,11 @@ const NestedView = ({ handleChangeEditSectionName }) => {
 
             <div>
               {section?.subSection?.map((data) => {
-                return ( 
+                return (
                   <div
                     key={data._id}
                     onClick={() => setViewSubSection(data)}
-                    className="flex items-center justify-between gap-x-3 border-b-2 bg-white p-10"
+                    className="flex items-center justify-between p-10 bg-white border-b-2 gap-x-3"
                   >
                     <div className="flex items-center gap-x-3">
                       <RxDropdownMenu />
@@ -110,8 +110,11 @@ const NestedView = ({ handleChangeEditSectionName }) => {
                       <p className="text-black">{data?.title}</p>
                       <p className="text-black">{data?.description}</p>
                     </div>
-                          
-                    <div onClick={(e) => e.stopPropagation()} className="flex items-center gap-x-3">
+
+                    <div
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center gap-x-3"
+                    >
                       <button
                         onClick={() => {
                           setEditSubSection({
@@ -145,7 +148,7 @@ const NestedView = ({ handleChangeEditSectionName }) => {
             </div>
             <button
               onClick={() => setAddSubSection(section?._id)}
-              className="mt-4 flex items-center"
+              className="flex items-center mt-4"
             >
               <AiOutlinePlus />
               <p>Add Lecture</p>
@@ -153,6 +156,7 @@ const NestedView = ({ handleChangeEditSectionName }) => {
           </details>
         ))}
       </div>
+
       {addSubSection ? (
         <SubSectionModal
           modalData={addSubSection}

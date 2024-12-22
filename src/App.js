@@ -26,12 +26,12 @@ import Catalog from "./pages/Catalog";
 import CourseDetails from "./pages/CourseDetails";
 import ViewCourse from "./pages/ViewCourse";
 import VideoDetails from "./components/core/viewCourse/VideoDetails";
+import SavedCourses from "./components/core/Dashboard/SavedCourses";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
-  // console.log(user.accountType);
   return (
-    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
+    <div className="flex flex-col w-screen min-h-screen bg-richblack-900 font-inter">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -73,6 +73,7 @@ function App() {
             <>
               <Route path="/dashboard/add-course" element={<AddCourse />} />
               <Route path="/dashboard/my-courses" element={<MyCourses />} />
+              <Route path="/dashboard/saved-courses" element={<SavedCourses />} />
               <Route
                 path="/dashboard/edit-course/:courseId"
                 element={<EditCourse />}

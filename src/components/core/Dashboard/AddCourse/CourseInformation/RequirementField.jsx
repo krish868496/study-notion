@@ -52,9 +52,11 @@ const RequirementField = ({
         id={name}
         value={requirement}
         onChange={(e) => setRequirement(e.target.value)}
-        className="w-full"
+        className="w-[617px] py-6 px-4 text-richblack-50 bg-richblack-600 rounded-xl shadow-custom-input focus:border-none focus:outline-none"
+        placeholder="Enter requirement of the course"
       />
       <button
+      type="button"
         className="font-semibold text-yellow-50"
         onClick={handleAddRequirement}
       >

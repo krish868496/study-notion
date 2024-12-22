@@ -21,7 +21,6 @@ export default function CourseBuilderForm() {
   const [editSectionName, setEditSectionName] = useState(null);
   const [loading, setLoading] = useState(false);
   const { course, step } = useSelector((state) => state.course);
-  console.log(course, "course");
   const { token } = useSelector((state) => state.auth);
   const {
     register,
@@ -32,7 +31,7 @@ export default function CourseBuilderForm() {
 
   const cancelEdit = () => {
     setEditSectionName(null);
-    setValue("SectionName", "");
+    setValue("SectionName", ""); 
   };
 
   const goToNext = () => {
@@ -47,9 +46,7 @@ export default function CourseBuilderForm() {
       return;
     }
     // if everything is good
-    console.log("step")
     dispatch(setStep(3));
-    console.log("step baad wala")
   };
   const goBack = () => {
     dispatch(setStep(1));
@@ -88,20 +85,19 @@ export default function CourseBuilderForm() {
   };
 
   const handleChangeEditSectionName = (sectionId, sectionName) => {
-    // when click on second time it edit section name will be equal to second id and hit the execute the cancel edit  funciton 
+    // when click on second time it edit section name will be equal to second id and hit the execute the cancel edit  funciton
     if (editSectionName === sectionId) {
       cancelEdit();
       return;
     }
-    setEditSectionName(sectionId);
     setValue("sectionName", sectionName);
+    setEditSectionName(sectionId);
   };
   return (
     <div>
-      <div className="text-richblack-5">
-        <p>Course Builder form</p>
+      <div className="text-richblack-5 bg-richblack-600">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
+          <div className="">
             <label htmlFor="sectionName">
               Section name <sup>*</sup>
             </label>
@@ -113,10 +109,10 @@ export default function CourseBuilderForm() {
               className="w-full text-richblack-900"
             />
             {errors.sectionName && (
-              <span className="text-red-500">Section name is required</span>
+              <span className="text-red-500">Section Name is required</span>
             )}
           </div>
-          <div className="mt-10 flex gap-x-5">
+          <div className="flex mt-10 gap-x-5">
             <IconBtn
               type="submit"
               text={editSectionName ? "Edit Section Name" : "Create Section"}
@@ -129,7 +125,7 @@ export default function CourseBuilderForm() {
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="text-sm text-richblack-300 underline"
+                className="text-sm underline text-richblack-300"
               >
                 Cancel Edit
               </button>
@@ -144,7 +140,7 @@ export default function CourseBuilderForm() {
         )}
         <div className="flex gap-x-3">
           <button
-            className="rounded-md cursor-pointer flex items-center "
+            className="flex items-center rounded-md cursor-pointer "
             onClick={goBack}
           >
             Back

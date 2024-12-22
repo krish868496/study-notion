@@ -53,7 +53,7 @@ const ChipInput = ({
           ))}
         </ul>
       )}
-      <label htmlFor="">
+      <label htmlFor="" className="text-richblack-5 font-normal leading-6 text-[14px]">
         {label}
         <sup>*</sup>
       </label>
@@ -64,7 +64,7 @@ const ChipInput = ({
         placeholder={placeholder}
         onChange={(e) => setTags(e.target.value)}
         onKeyDown={handleKeyDown}
-        className="w-full"
+        className="w-[617px] py-6 px-4 text-richblack-50 bg-richblack-600 rounded-xl shadow-custom-input focus:border-none focus:outline-none"
       />
       {errors[name] && <span>{label} field is required.</span>}
     </div>

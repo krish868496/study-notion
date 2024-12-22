@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { createSubSection, updateSubSection } from "../../../../../services/operations/courseDetailsApi";
+import {
+  createSubSection,
+  updateSubSection,
+} from "../../../../../services/operations/courseDetailsApi";
 import { setCourse } from "../../../../../slices/courseSlice";
-import {RxCross1} from "react-icons/rx"
+import { RxCross1 } from "react-icons/rx";
 import IconBtn from "../../../../common/IconBtn";
-import Upload from '../CourseInformation/Upload'
+import Upload from "../CourseInformation/Upload";
 
 const SubSectionModal = ({
   modalData,
@@ -66,11 +69,13 @@ const SubSectionModal = ({
     setLoading(true);
     // api call
     const result = await updateSubSection(formData, token);
-    
+
     if (result) {
-      const updatedCourse = course?.courseContent?.map((section) => section?._id === modalData?.sectionId ? result : section)
+      const updatedCourse = course?.courseContent?.map((section) =>
+        section?._id === modalData?.sectionId ? result : section
+      );
       console.log(updatedCourse, "updated course");
-      const updatedCourseDetails = {...course, courseContent: updatedCourse}
+      const updatedCourseDetails = { ...course, courseContent: updatedCourse };
       // todo same check
       dispatch(setCourse(updatedCourseDetails));
     }
@@ -98,15 +103,16 @@ const SubSectionModal = ({
 
     //     api call
     const result = await createSubSection(formData, token);
-    const updateCourse = course?.courseContent?.map((section) => section?._id === modalData ? result : section?.subSection)
-    const updateCourseContent = {...course, courseContent:updateCourse}
+    const updateCourse = course?.courseContent?.map((section) =>
+      section?._id === modalData ? result : section?.subSection
+    );
+    const updateCourseContent = { ...course, courseContent: updateCourse };
     if (updateCourseContent) {
       // todo
       dispatch(setCourse(updateCourseContent));
     }
     setModalData(null);
     setLoading(false);
-
   };
   return (
     <div>

@@ -11,28 +11,30 @@ const CourseDetailsCard = ({
   setConfirmationModal,
   handleBuyCourse,
 }) => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.profile);
   const { token } = useSelector((state) => state.auth);
   const { thumbnail, price } = course;
-  const handleAddToCart = () => {
+  function handleAddToCart() {
+    console.log(this)
     if (user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
       toast.error("Only students can add courses to cart");
       return;
     }
-    if(token){
-      dispatch(addToCart)
-      return;
+    if (token) {
+      console.log(this)
+      dispatch(addToCart(this));
+      // return;
     }
-    setConfirmationModal({
-      text1: "you are not logged in",
-      text2: "Please login to add to cart",
-      btnText: "Login",
-      btn2Text: "Cancel",
-      btn1Handler: () => navigate("/login"),
-      btn2Handler: setConfirmationModal(null),
-    });
+    // setConfirmationModal({
+    //   text1: "you are not logged in",
+    //   text2: "Please login to add to cart",
+    //   btnText: "Login",
+    //   btn2Text: "Cancel",
+    //   btn1Handler: () => navigate("/login"),
+    //   btn2Handler: setConfirmationModal(null),
+    // });
   };
   const handleShare = () => {
     copy(window.location.href);
@@ -59,7 +61,7 @@ const CourseDetailsCard = ({
             : "Buy Now"}
         </button>
         {!course?.studentEnrolled.includes(user?._id) && (
-          <button onClick={handleAddToCart}>Add to cart</button>
+          <button onClick={handleAddToCart.bind(course)}>Add to cart</button>
         )}
       </div>
       <div>

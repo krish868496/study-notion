@@ -5,7 +5,7 @@ import { fetchInstructorCourses } from "../../../services/operations/courseDetai
 import IconBtn from "../../common/IconBtn";
 import CoursesTable from "./InstructorCourses/CoursesTable";
 
-const MyCourses = () => {
+const SavedCourses = () => {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
@@ -36,9 +36,9 @@ const MyCourses = () => {
           courses?.map((course) => (
             <div>
               {course?.status === "Draft" ? (
-                <div></div>
-              ) : (
                 <CoursesTable course={course} setCourses={setCourses} />
+              ) : (
+                <div></div>
               )}
             </div>
           ))
@@ -48,4 +48,4 @@ const MyCourses = () => {
   );
 };
 
-export default MyCourses;
+export default SavedCourses;

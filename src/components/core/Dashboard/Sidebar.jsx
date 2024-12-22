@@ -14,7 +14,7 @@ const Sidebar = () => {
     (state) => state.profile
   );
   const { loading: authLoading } = useSelector((state) => state.auth);
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(true);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,14 +28,16 @@ const Sidebar = () => {
     );
   }
   return (
-    <div className="relative">
+    <div className="">
       <FaBars
         onClick={() => setOpen(true)}
         className="text-richblack-5 text-2xl absolute top-2 left-5 cursor-pointer"
       />
       <div
         className={`lg:flex min-w-[222px] flex-col border-r-[1ppx] border-r-richblack-700 h-[calc(100vh-3.5rem)] bg-richblack-800 lg:py-10 py-5  absolute transition duration-0 ${
-          open ? "duration-700 translate-x-0" : "-translate-x-[222px] duration-700 "
+          open
+            ? "duration-700 translate-x-0"
+            : "-translate-x-[222px] duration-700 "
         }`}
       >
         <FaAngleDoubleLeft

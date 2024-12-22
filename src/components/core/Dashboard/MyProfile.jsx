@@ -32,21 +32,7 @@ const MyProfile = () => {
           onClick={() => navigate("/dashboard/settings")}
         />
       </div>
-      {/* section 2  */}
-      <div className=" rounded-lg border-[1px] border-richblack-800 p-6 flex flex-col gap-10 bg-richblack-800">
-        <div className="flex justify-between">
-          <p className="font-bold text-lg leading-6 text-richblack-5">About</p>
-          <IconBtn
-            icon={<FaUserEdit className="text-2xl" />}
-            onClick={() => {
-              navigate("/dashboard/settings");
-            }}
-          />
-        </div>
-        <p className="text-sm text-richblack-300 font-normal">
-          {user?.additionalDetails?.about ?? "Write Something about yourself"}
-        </p>
-      </div>
+    
       {/* section 3  */}
       <div className=" rounded-lg border-[1px] border-richblack-800 p-6 flex flex-col gap-5 justify-between items-center bg-richblack-800">
         <div className="flex justify-between w-full">

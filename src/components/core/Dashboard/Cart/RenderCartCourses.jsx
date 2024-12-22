@@ -7,12 +7,13 @@ import ReactStars from "react-rating-stars-component";
 const RenderCartCourses = () => {
   const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  console.log(cart)
 
   return (
     <div>
       {cart.map((course, index) => (
         <div key={index}>
-          <div>
+          <div className="text-richblack-5">
             <img src={course?.thumbnail} alt={course?.thumbnail} />
             <div>
               <p>{course?.courseName}</p>
@@ -33,7 +34,7 @@ const RenderCartCourses = () => {
           </div>
 
           <div>
-            <button onClick={() => dispatch(course._id)}>
+            <button className="text-richblack-5" onClick={() => dispatch(course._id)}>
               <RiDeleteBin6Line /> <span>Remove</span>
             </button>
             <p>Rs {course?.price}</p>

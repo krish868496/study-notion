@@ -10,7 +10,6 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import Course_Card from './Course_Card'
 
 const CourseSlider = ({courses}) => {
-  console.log(courses, "courses from slider")
   return (
     <div>
       {courses?.length > 0 ? (
@@ -31,7 +30,7 @@ const CourseSlider = ({courses}) => {
           }}
         >
           {courses.map((course, index) => (
-            <SwiperSlide key={index}>
+            <SwiperSlide key={index} className='flex'>
               <Course_Card course={course} />
             </SwiperSlide>
           ))}

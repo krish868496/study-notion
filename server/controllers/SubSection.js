@@ -1,6 +1,6 @@
 const SubSection = require("../models/SubSection")
 const Section = require("../models/Section");
-const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { uploadFileToCloudinary } = require("../utils/imageUploader");
 
 // create subsection 
 exports.createSubSection = async (req, res) => {
@@ -19,7 +19,7 @@ exports.createSubSection = async (req, res) => {
                 }
 
                 // upload image to cloudinary 
-                const uploadDetails = await uploadImageToCloudinary(video, 'FileUpload')
+                const uploadDetails = await uploadFileToCloudinary(video, 'FileUpload')
 
                 // create subsection 
                 const subSectionDetails = await SubSection.create({title, description, videoUrl: uploadDetails?.secure_url })
@@ -58,7 +58,7 @@ exports.updateSubSection = async (req, res) => {
                 }
 
                 // Upload video to Cloudinary
-                const uploadDetails = await uploadImageToCloudinary(video, 'FileUpload');
+                const uploadDetails = await uploadFileToCloudinary(video, 'FileUpload');
                 if (!uploadDetails?.secure_url) {
                         return res.status(500).json({
                                 message: "Failed to upload video",

@@ -85,7 +85,7 @@ exports.signUp = async (req, res) => {
       !password ||
       !confirmPassword ||
       !accountType ||
-      !contactNumber ||
+      // !contactNumber ||
       !otp
     ) {
       return res.status(403).json({
@@ -134,12 +134,18 @@ exports.signUp = async (req, res) => {
 
     // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword, "hashedPassword");
     const profileDetails = await Profile.create({
+      firstName: firstName || null,
+      lastName: lastName || null,
+      email: email || null,
       gender: null,
       dateOfBirth: null,
-      about: null,
-      contactNumber: null,
+      // about: null,
+      contactNumber: contactNumber || null,
     });
+
+    console.log(profileDetails, "profileDetails");
 
     // entry create in db
     const user = await User.create({
@@ -202,16 +208,16 @@ exports.login = async (req, res) => {
       };
       // create token using jwt.sing method
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "36h",
       });
       checkUser.token = token;
       checkUser.password = undefined;
 
       // create cookie
-      // res.cookie("token", token, {
-      //         expires: new Date(Date.now() + 3 * 24 * 1000 * 60 * 60),
-      //         httpOnly: true
-      // })
+      res.cookie("token", token, {
+              expires: new Date(Date.now() + 3 * 24 * 1000 * 60 * 60),
+              httpOnly: true
+      })
       res.status(200).json({
         message: "user logged in successfully",
         success: true,
