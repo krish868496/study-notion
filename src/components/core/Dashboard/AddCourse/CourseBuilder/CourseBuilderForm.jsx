@@ -21,6 +21,9 @@ export default function CourseBuilderForm() {
   const [editSectionName, setEditSectionName] = useState(null);
   const [loading, setLoading] = useState(false);
   const { course, step } = useSelector((state) => state.course);
+  console.log(course);
+  console.log(course.courseContent);
+  console.log(course.courseContent.length);
   const { token } = useSelector((state) => state.auth);
   const {
     register,
@@ -31,7 +34,7 @@ export default function CourseBuilderForm() {
 
   const cancelEdit = () => {
     setEditSectionName(null);
-    setValue("SectionName", ""); 
+    setValue("sectionName", " ");
   };
 
   const goToNext = () => {
@@ -67,6 +70,10 @@ export default function CourseBuilderForm() {
       );
       console.log(result);
     } else {
+      if (data.sectionName === "") {
+        toast.error("Section name cannot be empty");
+        return;
+      }
       result = await createSection(
         {
           sectionName: data.sectionName,
@@ -75,6 +82,7 @@ export default function CourseBuilderForm() {
         token
       );
     }
+    console.log(result);
     // update value
     if (result) {
       dispatch(setCourse(result));
@@ -95,30 +103,26 @@ export default function CourseBuilderForm() {
   };
   return (
     <div>
-      <div className="text-richblack-5 bg-richblack-600">
+      <div className="rounded-lg text-richblack-5 bg-richblack-800 w-[600px] p-5 border-richblack-700 min-h-[250px] flex flex-col gap-8">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="">
             <label htmlFor="sectionName">
-              Section name <sup>*</sup>
+              Course Builder <sup>*</sup>
             </label>
             <input
               type="text"
               id="sectionName"
               placeholder="Add section name"
               {...register("sectionName", { required: true })}
-              className="w-full text-richblack-900"
+              className="w-[547px] py-6 px-4 text-richblack-50 bg-richblack-600 rounded-xl shadow-custom-input focus:border-none focus:outline-none mt-3"
             />
             {errors.sectionName && (
               <span className="text-red-500">Section Name is required</span>
             )}
           </div>
           <div className="flex mt-10 gap-x-5">
-            <IconBtn
-              type="submit"
-              text={editSectionName ? "Edit Section Name" : "Create Section"}
-              outline={true}
-              customClasses={"text-white"}
-            >
+            <IconBtn type="submit" outline={true} customClasses={"text-white"}>
+              {editSectionName ? "Edit Section Name" : "Create Section"}{" "}
               <MdAddCircleOutline className="text-yellow-50" />
             </IconBtn>
             {editSectionName && (
@@ -138,15 +142,10 @@ export default function CourseBuilderForm() {
             handleChangeEditSectionName={handleChangeEditSectionName}
           />
         )}
-        <div className="flex gap-x-3">
-          <button
-            className="flex items-center rounded-md cursor-pointer "
-            onClick={goBack}
-          >
-            Back
-          </button>
-          <IconBtn text="Next" onClick={goToNext}>
-            <BiRightArrow />
+        <div className="flex justify-end my-5 gap-x-8">
+          <IconBtn onClick={goBack}>Back</IconBtn>
+          <IconBtn onClick={goToNext} type="active">
+            Next <BiRightArrow />
           </IconBtn>
         </div>
       </div>

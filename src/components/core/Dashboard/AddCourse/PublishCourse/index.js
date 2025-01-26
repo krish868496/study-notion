@@ -18,13 +18,17 @@ const PublishCourse = () => {
     dispatch(setStep(2));
   };
   useEffect(() => {
+        console.log(getValues());
+        console.log(getValues("publish"));
+        console.log(getValues("public"));
     if (course?.status === COURSE_STATUS.PUBLISHED) setValue("public", true);
   }, []);
   const gotToCourses = () => {
-    // dispatch(resetCourseState()) 
-    navigate('/dashboard/my-course')
+    // dispatch(resetCourseState())
+    navigate("/dashboard/my-courses");
   };
   const handleCoursePublish = async () => {
+
     if (
       (course?.status === COURSE_STATUS.PUBLISHED &&
         getValues("public") === true) ||
@@ -46,10 +50,8 @@ const PublishCourse = () => {
     setLoading(true);
 
     const result = await editCourseDetails(formData, token);
-    console.log(result);
     if (result) {
       gotToCourses();
-      
     }
     setLoading(false);
   };
@@ -58,9 +60,9 @@ const PublishCourse = () => {
   };
   return (
     <div className="rounded-md border-[1px] bg-richblack-800 p-6 border-richblack-700 text-richblack-5">
-      <p>Publish Course</p>
-      <form onSubmit={handleSubmit(onsubmit)}>
-        <div>
+      <h1 className="text-xl leading-9">Publish Course</h1>
+      <form onSubmit={handleSubmit(onsubmit)} className="flex flex-col gap-6">
+        <div className="flex items-center gap-3">
           <label htmlFor="public">
             <span>Make this course as public</span>
           </label>
@@ -68,15 +70,17 @@ const PublishCourse = () => {
             type="checkbox"
             id="public"
             {...register("public", { required: true })}
-            className="rounded-md h-4 w-4"
+            className="w-4 h-4 rounded-md"
           />
-          <div className="flex justify-end gap-x-3">
-            <button disabled={loading} type="button" onClick={goBack}>
-              go back
-            </button>
-            <IconBtn disabled={loading} text="Save Changes" />
-          </div>
         </div>
+          <div className="flex justify-end gap-x-3">
+            <IconBtn disabled={loading} onClick={goBack}>
+              go back
+            </IconBtn>
+            <IconBtn disabled={loading} type="active">
+              Save Changes
+            </IconBtn>
+          </div>
       </form>
     </div>
   );

@@ -22,10 +22,9 @@ const SavedCourses = () => {
     <div>
       <div className="text-richblack-5">
         <h1>My Courses</h1>
-        <IconBtn
-          text="Add Courses"
-          onClick={() => navigate("/dashboard/add-course")}
-        ></IconBtn>
+        <IconBtn onClick={() => navigate("/dashboard/add-course")}>
+          Add Courses
+        </IconBtn>
       </div>
       <div>
         {courses.length === 0 ? (

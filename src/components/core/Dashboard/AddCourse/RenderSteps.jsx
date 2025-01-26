@@ -7,7 +7,6 @@ import PublishCourse from "./PublishCourse";
 
 const RenderSteps = () => {
   const { step } = useSelector((state) => state.course);
-
   const steps = [
     {
       id: 1,
@@ -24,33 +23,48 @@ const RenderSteps = () => {
   ];
   return (
     <div>
-      {steps.map((step) => (
-        <div key={step.id}>
-          <div
-            className={`step ${
-              step.id === step
-                ? "bg-yellow-900 border-yellow-50 text-yellow-50"
-                : "border-richblack-700 bg-richblack-800 text-richblack-300"
-            }`}
-          >
-            {step > step?.id ? <FaCheck /> : step?.id}
-          </div>
-          {/* add code for dashes between the labels */}
-        </div>
-      ))}
-
       <div className="flex items-center justify-center my-10">
-        {steps.map((step) => (
-          <div
-            key={step.id}
-            className="text-richblue-5 w-[220px] flex flex-col items-center"
-          >
-            <p className="flex items-center justify-center w-8 h-8 border rounded-full border-richblack-600 bg-richblack-600">
-              {step?.id}
-            </p>
-            <p>{step?.title}</p>
-          </div>
-        ))}
+        {steps.map((stepItem) => {
+          return (
+            <div
+              key={stepItem.id}
+              className="relative w-[200px] flex flex-col items-center text-richblue-5"
+            >
+              {/* Step Number */}
+              <p
+                className={`flex items-center justify-center w-8 h-8 border rounded-full  
+      ${
+        stepItem?.id === step
+          ? "border-yellow-200 bg-[#251400]"
+          : "border-richblack-600 bg-richblack-800"
+      }
+      ${
+        stepItem.id < step
+          ? "bg-yellow-200  before:content-['✔'] before:text-richblack-5"
+          : "border-richblack-600 bg-richblack-800"
+      }
+    `}
+              >
+                {/* {stepItem.id} */}
+                {stepItem?.id >= step && <span>{stepItem.id}</span>}
+              </p>
+
+              {/* Step Title */}
+              <p>{stepItem.title}</p>
+
+              {/* Dashed Line (Only if it's NOT the last step) */}
+              {stepItem.id !== steps.length && (
+                <div
+                  className={` ${
+                    stepItem?.id === step
+                      ? "border-yellow-200"
+                      : "border-richblack-600"
+                  } absolute w-[11rem] border border-white border-dashed top-4 left-[118px]`}
+                ></div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {step === 1 && <CourseInformationForm />}

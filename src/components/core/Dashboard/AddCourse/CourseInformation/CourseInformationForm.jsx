@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { COURSE_STATUS } from "../../../../common/constant";
 import ChipInput from "./ChipInput";
 import Upload from "./Upload";
+import { TbMathGreater } from "react-icons/tb";
 
 const CourseInformationForm = () => {
   const {
@@ -46,7 +47,7 @@ const CourseInformationForm = () => {
       setValue("coursePrice", course.price);
       setValue("courseTags", course.tag);
       setValue("courseBenefits", course.whatYouWillLearn);
-      setValue("courseCategory", course.category);
+      setValue("courseCategory", course?.category?.name);
       setValue("courseRequirements", course.instructions);
       setValue("courseImage", course.thumbnail);
     }
@@ -116,6 +117,7 @@ const CourseInformationForm = () => {
 
         setLoading(true);
         const result = await editCourseDetails(formData, token);
+        console.log(result);
         setLoading(false);
         if (result) {
           dispatch(setStep(2));
@@ -238,7 +240,7 @@ const CourseInformationForm = () => {
             {!loading &&
               courseCategories.map((category, index) => (
                 <option
-                  value={category?._id}
+                  value={category?.name}
                   key={index}
                   className="w-[617px] py-6 px-4 text-richblack-50 bg-richblack-600 rounded-xl shadow-custom-input focus:border-none focus:outline-none"
                 >
@@ -264,6 +266,7 @@ const CourseInformationForm = () => {
 
         {/* create a component for uploading and showing preview of media  */}
         <Upload
+          viewData={course?.thumbnail}
           name="courseImage"
           label="Course Image"
           register={register}
@@ -298,16 +301,20 @@ const CourseInformationForm = () => {
           setValue={setValue}
           getValues={getValues}
         />
-        <div className="">
+        <div
+          className={`flex  my-6 ${
+            !editCourse ? "justify-end" : "justify-between"
+          }`}
+        >
           {editCourse && (
-            <button
-              onClick={() => dispatch(setStep(2))}
-              className="flex items-center gap-x-2 bg-richblack-300"
-            >
+            <IconBtn onClick={() => dispatch(setStep(2))}>
               Continue Without Saving
-            </button>
+            </IconBtn>
           )}
-          <IconBtn text={!editCourse ? "Next" : "Save Changes"} />
+          <IconBtn type="active">
+            {!editCourse ? "Next" : "Save Changes"}
+            <TbMathGreater />
+          </IconBtn>
         </div>
       </form>
     </>

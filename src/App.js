@@ -27,6 +27,8 @@ import CourseDetails from "./pages/CourseDetails";
 import ViewCourse from "./pages/ViewCourse";
 import VideoDetails from "./components/core/viewCourse/VideoDetails";
 import SavedCourses from "./components/core/Dashboard/SavedCourses";
+import MyForm from "./components/core/MyForm";
+import "./App.css";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
@@ -35,6 +37,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        {/* <Route path="/my-form" element={<MyForm />} /> */}
         <Route path="/catalog/:catalogName" element={<Catalog />} />
         <Route path="/courses/:courseId" element={<CourseDetails />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -73,7 +76,10 @@ function App() {
             <>
               <Route path="/dashboard/add-course" element={<AddCourse />} />
               <Route path="/dashboard/my-courses" element={<MyCourses />} />
-              <Route path="/dashboard/saved-courses" element={<SavedCourses />} />
+              <Route
+                path="/dashboard/saved-courses"
+                element={<SavedCourses />}
+              />
               <Route
                 path="/dashboard/edit-course/:courseId"
                 element={<EditCourse />}

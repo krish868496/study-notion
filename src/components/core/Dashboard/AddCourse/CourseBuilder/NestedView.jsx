@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RxDropdownMenu } from "react-icons/rx";
 import { MdEdit } from "react-icons/md";
@@ -13,8 +13,9 @@ import {
 } from "../../../../../services/operations/courseDetailsApi";
 import { setCourse } from "../../../../../slices/courseSlice";
 import ConfirmationModal from "../../../../common/ConfirmationModal";
+import IconBtn from "../../../../common/IconBtn";
 
-const NestedView = ({ handleChangeEditSectionName }) => {
+const NestedView = memo(({ handleChangeEditSectionName }) => {
   const { course } = useSelector((state) => state.course);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const NestedView = ({ handleChangeEditSectionName }) => {
       },
       token
     );
+    console.log(result);
     if (result) {
       dispatch(setCourse(result));
     }
@@ -54,15 +56,24 @@ const NestedView = ({ handleChangeEditSectionName }) => {
 
   return (
     <div>
-      <div className="p-6 rounded-lg bg-richblack-700">
+      <div className="p-6 rounded-lg bg-richblack-600 border-richblack-700">
         {course?.courseContent?.map((section) => (
-          <details key={section._id} open>
-            <summary className="flex items-center justify-between border-b-2 gap-x-3">
+          <details
+            key={section._id}
+            open
+            className="py-3.5 border-b border-richblack-5"
+          >
+            <summary className="flex items-center justify-between pb-1 gap-x-3">
               <div className="flex items-center gap-x-3">
                 <RxDropdownMenu />
-                <p>{section?.sectionName}</p>
+                <p
+                  title={section?.sectionName}
+                  className="text-lg leading-8 tracking-wide line-clamp-1"
+                >
+                  {section?.sectionName}
+                </p>
               </div>
-              <div className="flex items-center">
+              <div className="flex items-center gap-3 text-xl text-richblack-5">
                 <button
                   onClick={() =>
                     handleChangeEditSectionName(
@@ -89,70 +100,71 @@ const NestedView = ({ handleChangeEditSectionName }) => {
                   <RiDeleteBin6Line />{" "}
                 </button>
                 <span>|</span>
-                <BiSolidDownArrow className={`text-xl text-richblue-300 `} />
+                <BiSolidDownArrow />
               </div>
             </summary>
 
             <div>
               {section?.subSection?.map((data) => {
                 return (
-                  <div
+                  <details
                     key={data._id}
                     onClick={() => setViewSubSection(data)}
-                    className="flex items-center justify-between p-10 bg-white border-b-2 gap-x-3"
+                    className="flex flex-col items-start gap-3 p-2 text-base bg-richblack-400 text-richblack-25 gap-x-3"
                   >
-                    <div className="flex items-center gap-x-3">
-                      <RxDropdownMenu />
-                      <video
-                        src={data?.videoUrl}
-                        className="w-[75px] h-[70px]"
-                      ></video>
-                      <p className="text-black">{data?.title}</p>
-                      <p className="text-black">{data?.description}</p>
-                    </div>
+                    <summary className="flex items-center justify-between w-full ">
+                      <div className="flex items-center gap-x-4">
+                        <video
+                          src={data?.videoUrl}
+                          className="w-[65px] h-[50px] object-cover"
+                        ></video>
+                        <p className="line-clamp-1">{data?.title}</p>
+                        <p className="line-clamp-1">{data?.description}</p>
+                      </div>
 
-                    <div
-                      onClick={(e) => e.stopPropagation()}
-                      className="flex items-center gap-x-3"
+                      <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-x-3"
+                      >
+                        <button
+                          onClick={() => {
+                            setEditSubSection({
+                              ...data,
+                              sectionId: section?._id,
+                            });
+                          }}
+                        >
+                          <MdEdit />
+                        </button>
+                        <button
+                          onClick={() => {
+                            setConfirmationModal({
+                              id: section?._id,
+                              text1: "Delete this Sub Section",
+                              text2: "Selected category will be deleted",
+                              btn1Text: "Delete",
+                              btn2Text: "Cancel",
+                              btn1Handler: () =>
+                                handleDeleteSubSection(data?._id, section?._id),
+                              btn2Handler: () => setConfirmationModal(null),
+                            });
+                          }}
+                        >
+                          <RiDeleteBin6Line />
+                        </button>
+                      </div>
+                    </summary>
+                    <IconBtn
+                      onClick={() => setAddSubSection(section?._id)}
+                      type="border"
                     >
-                      <button
-                        onClick={() => {
-                          setEditSubSection({
-                            ...data,
-                            sectionId: section?._id,
-                          });
-                        }}
-                      >
-                        <MdEdit />
-                      </button>
-                      <button
-                        onClick={() => {
-                          setConfirmationModal({
-                            id: section?._id,
-                            text1: "Delete this Sub Section",
-                            text2: "Selected category will be deleted",
-                            btn1Text: "Delete",
-                            btn2Text: "Cancel",
-                            btn1Handler: () =>
-                              handleDeleteSubSection(data?._id, section?._id),
-                            btn2Handler: () => setConfirmationModal(null),
-                          });
-                        }}
-                      >
-                        <RiDeleteBin6Line />
-                      </button>
-                    </div>
-                  </div>
+                      <AiOutlinePlus />
+                      <p>Add Lecture</p>
+                    </IconBtn>
+                  </details>
                 );
               })}
             </div>
-            <button
-              onClick={() => setAddSubSection(section?._id)}
-              className="flex items-center mt-4"
-            >
-              <AiOutlinePlus />
-              <p>Add Lecture</p>
-            </button>
           </details>
         ))}
       </div>
@@ -185,6 +197,6 @@ const NestedView = ({ handleChangeEditSectionName }) => {
       )}
     </div>
   );
-};
+});
 
 export default NestedView;

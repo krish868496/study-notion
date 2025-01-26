@@ -136,6 +136,7 @@ module.exports = {
       },    
       boxShadow: {
         'custom-input': '0px -1px 0px 0px #FFFFFF2E inset',
+        'iconBtn-shadow': '-2px -2px 0px 0px #FFFFFF82 inset',
       },
     },
   },

@@ -203,6 +203,7 @@ export const updateSection = async (data, token) => {
   return result;
 };
 export const updateSubSection = async (data, token) => {
+  console.log(data)
   const toastId = toast.loading("Loading...");
   let result = null;
   try {

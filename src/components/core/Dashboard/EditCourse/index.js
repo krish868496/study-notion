@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import {setCourse, setEditCourse} from '../../../../slices/courseSlice'
 import { getFullDetailsOfCourse } from '../../../../services/operations/courseDetailsApi';
 import RenderSteps from '../AddCourse/RenderSteps';
+import { Steps } from '../AddCourse';
 
 const EditCourse = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ const EditCourse = () => {
   const {course} = useSelector((state) => state.course)
   const [loading, setLoading] = useState(false)
   const {token} = useSelector((state) => state.auth)
+  console.log(course)
 
   useEffect(() => {
     const populateCourseDetails = async () => {
@@ -33,7 +35,7 @@ const EditCourse = () => {
         <h1>Edit Course</h1>
         <div className="">
           {
-            course ? (<RenderSteps />) : (<p>Course not found</p>)
+            course ? (<Steps />) : (<p>Course not found</p>)
           }
         </div>
     </div>

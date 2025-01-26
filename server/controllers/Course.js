@@ -229,7 +229,14 @@ exports.editCourse = async (req, res) => {
         category: checkCategory?._id,
       },
       { new: true }
-    );
+    )
+      .populate({
+        path: "courseContent",
+        populate: {
+          path: "subSection",
+        },
+      }).populate("category")
+      // .populate(category);
     console.log("editCourseDetails", newCourse);
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -241,7 +248,6 @@ exports.editCourse = async (req, res) => {
       },
       { new: true }
     );
-    console.log(updatedUser, "updated user");
 
     return res.status(200).json({
       message: "course created successfully",

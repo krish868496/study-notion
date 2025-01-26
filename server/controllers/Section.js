@@ -20,7 +20,12 @@ exports.createSection = async (req, res) => {
 
                 // Now populate the `courseContent` field to get the full details
                 const updatedCourseDetails = await Course.findById(courseId)
-                        .populate('courseContent');
+                        .populate({
+                               path: 'courseContent',
+                               populate: {
+                                       path: 'subSection',
+                               }
+                        });
 
                         console.log(updatedCourseDetails, "updatedCourseDetails");
 
@@ -57,7 +62,12 @@ exports.updateSection = async (req, res) => {
                 }
                 // update data 
                 const section = await Section.findByIdAndUpdate(sectionId, { sectionName }, { new: true })
-                const updatedCourseDetails = await Course.findById(courseId).populate('courseContent')
+                const updatedCourseDetails = await Course.findById(courseId).populate({
+                        path:'courseContent',
+                        populate: {
+                               path:'subSection',
+                        }
+                })
                 console.log(updatedCourseDetails, "updatedCourseDetails");
                 return res.status(200).json({
                         message: "section updated successfully",
@@ -88,7 +98,12 @@ exports.deleteSection = async (req, res) => {
                 }
                 // update data 
                 const updatedCourseDetails = await Course.findByIdAndUpdate(courseId, { $pull: { courseContent: sectionId } }, { new: true })
-                const populatedCourseDetails = await Course.findById(courseId).populate("courseContent")
+                const populatedCourseDetails = await Course.findById(courseId).populate({
+                        path:"courseContent",
+                        populate: {
+                               path:"subSection",
+                        }
+                })
                 
 
                 return res.status(200).json({

@@ -36,7 +36,8 @@ const Upload = ({
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
-      const reader = new FileReader();
+      const reader = new 
+      FileReader();
       reader.onloadend = () => {
         setPreview(reader.result);
         setValue(name, selectedFile);
