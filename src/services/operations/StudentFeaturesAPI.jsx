@@ -10,7 +10,6 @@ const {
   SEND_PAYMENT_SUCCESS_EMAIL_API,
 } = studentEndpoints;
 
-
 function loadScript(src) {
   return new Promise(function (resolve, reject) {
     const script = document.createElement("script");
@@ -66,29 +65,31 @@ export async function buyCourse(
         name: `${userDetails.firstName} ${userDetails.lastName}`,
         email: userDetails.email,
       },
-      handler: function (response) {
+      handler: async function (response) {
+        console.log(response);
+        // verifyPayment
+        await verifyPayment(
+          { ...response, courses },
+          token,
+          navigate,
+          dispatch
+        );
+
         // send successful mail
-        // sendPaymentSuccessEmail(
-        //   response,
-        //   orderResponse.data.paymentResponse.amount
-        // );
-        sendPaymentSuccessEmail(
+        await sendPaymentSuccessEmail(
           response,
           orderResponse.data.paymentResponse.amount,
           token
         );
-        // verifyPayment
-        verifyPayment({ ...response, courses }, token, navigate, dispatch);
       },
     };
 
-    console.error(options, "options");
-    
-    const paymentObject = new window.Razorpay(options)
+
+    const paymentObject = new window.Razorpay(options);
     paymentObject.open();
     paymentObject.on("payment failed", (response) => {
-        toast.error("oops, payment failed")
-    })
+      toast.error("oops, payment failed");
+    });
   } catch (error) {
     console.log("Payment failed", error);
     toast.error("couldn't make payment", error);
@@ -97,6 +98,7 @@ export async function buyCourse(
 }
 
 async function sendPaymentSuccessEmail(response, amount, token) {
+  console.log(response, amount, token);
   try {
     await apiConnector(
       "POST",
@@ -119,11 +121,12 @@ async function verifyPayment(response, token, navigate, dispatch) {
   const toastId = toast.loading("Verifying Payment...");
   dispatch(setPaymentLoading(true));
   try {
-     await apiConnector("POST", COURSE_VERIFY_API, response, {
+    const res = await apiConnector("POST", COURSE_VERIFY_API, response, {
       Authorization: `Bearer ${token}`,
     });
-    if (!response.data.success) {
-      throw new Error(response.data.message);
+    console.log(res, "rest")
+    if (!res.data.success) {
+      throw new Error(res.data.message);
     }
     toast.success("Payment Successful");
     navigate("/dashboard/enrolled-courses");

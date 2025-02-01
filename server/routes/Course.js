@@ -42,7 +42,7 @@ router.get("/getCourseDetails/:courseId", getCourseDetails);
 router.get(
   "/getFullCourseDetails/:courseId",
   auth,
-  isInstructor,
+  isStudent,
   getFullCourseDetails
 );
 // router.post("/verifysignature", verifySignature)

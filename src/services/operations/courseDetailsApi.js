@@ -293,13 +293,13 @@ export const fetchInstructorCourses = async (token) => {
 };
 
 export const getFullDetailsOfCourse = async (courseId, token) => {
+  console.log(courseId, token, "token value");
   // const toastId = toast.loading("Loading...");
   let result = null;
   try {
     const response = await apiConnector(
       "GET",
       `${GET_FULL_COURSE_DETAILS_AUTHENTICATED}/${courseId}`,
-      {token},
       {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json", // Optional, but ensures correct content type

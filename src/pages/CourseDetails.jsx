@@ -7,6 +7,7 @@ import GetAvgRating from "../utils/avgRating";
 import ConfirmationModal from "../components/common/ConfirmationModal";
 import RatingStars from "../components/common/RatingStars";
 import CourseDetailsCard from "../components/core/Course/CourseDetailsCard";
+import { AiOutlineGlobal } from "react-icons/ai";
 
 const CourseDetails = () => {
   const { user } = useSelector((state) => state.profile);
@@ -93,27 +94,33 @@ const CourseDetails = () => {
   }
 
   return (
-    <div className="flex flex-col items-center text-richblack-5">
-      <div className="relative flex justify-start">
-        <p>{courseName}</p>
-        <p>{courseDescription}</p>
-        <div>
-          <span>
-            <p>{reviewCount}</p>
-          </span>
-          <RatingStars Review_Count={reviewCount} Star_Size={24} />
-          <span>{`(${ratingAndReview?.length})`}</span>
-          <span>{`(${studentsEnrolled?.length})`}</span>
+    <div className="flex flex-col my-5 lg:w-4/5 lg:mx-auto text-richblack-5 ">
+      <div className="relative flex gap-10 ">
+        <div className="lg:w-[768px] flex flex-col justify-start lg:h-[318px] gap-2">
+          {/* breadcrumb need to add  */}
+          <h1 className="font-semibold text-[30px] leading-9">{courseName}</h1>
+          <p className="text-richblack-100">{courseDescription}</p>
+          <div className="flex items-center gap-4">
+            <span>
+              <p>{reviewCount}</p>
+            </span>
+            <RatingStars Review_Count={reviewCount} Star_Size={24} />
+            <span>{`(${ratingAndReview?.length})`}</span>
+            <span>{`(${studentsEnrolled?.length})`}</span>
+          </div>
+          <div>
+            <p>Created By {instructor?.firstName}</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <p>Created At {createdAt}</p>
+            <p className="flex items-center gap-4">
+              <AiOutlineGlobal />
+              <span>English</span>
+            </p>
+          </div>
         </div>
-
-        <div>
-          <p>Created By {instructor?.firstName}</p>
-        </div>
-        <div>
-          <p>Created At {createdAt}</p>
-          <p>English</p>
-        </div>
-        <div className="">
+        <div className="w-[1px] h-48 bg-richblack-600 mt-2"></div>
+        <div className="absolute right-4 top-5 w-[384px] h-[669px] rounded-md bg-richblack-600">
           <CourseDetailsCard
             course={courseData}
             setConfirmationModal={setConfirmationModal}

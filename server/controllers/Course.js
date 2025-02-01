@@ -4,9 +4,7 @@ const Category = require("../models/Category");
 const { uploadFileToCloudinary } = require("../utils/imageUploader");
 const User = require("../models/User");
 
-
-
-// to remove all courses from database 
+// to remove all courses from database
 
 exports.deleteAllCourses = async (req, res) => {
   try {
@@ -199,7 +197,7 @@ exports.editCourse = async (req, res) => {
     // check given tag is valid or not
     let checkCategory;
     if (category) {
-       checkCategory = await Category.findById(category);
+      checkCategory = await Category.findById(category);
       if (!checkCategory) {
         return res.status(400).json({
           message: "invalid category",
@@ -235,8 +233,9 @@ exports.editCourse = async (req, res) => {
         populate: {
           path: "subSection",
         },
-      }).populate("category")
-      // .populate(category);
+      })
+      .populate("category");
+    // .populate(category);
     console.log("editCourseDetails", newCourse);
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -332,7 +331,7 @@ exports.getFullCourseDetails = async (req, res) => {
   try {
     // get course id
     const { courseId } = req.params;
-    console.log(courseId)
+    console.log(courseId);
     // find course details
     const courseDetails = await Course.findById(courseId)
       .populate({
@@ -357,7 +356,7 @@ exports.getFullCourseDetails = async (req, res) => {
       })
       .exec();
 
-      console.log(courseDetails, "course details")
+    console.log(courseDetails, "course details");
 
     if (!courseDetails) {
       return res.status(400).json({

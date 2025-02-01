@@ -61,11 +61,7 @@ function App() {
           {user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <>
               <Route
-                path="/dashboard/view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
-                element={<VideoDetails />}
-              />
-              <Route
-                path="/dashboard/enrolled-courses"
+                path="/dashboard/enrolled-course"
                 element={<EnrolledCourses />}
               />
               <Route path="/dashboard/cart" element={<Cart />} />
@@ -101,10 +97,10 @@ function App() {
                 path="/view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
                 element={<VideoDetails />}
               />
-              <Route
+              {/* <Route
                 path="/dashboard/enrolled-course"
                 element={<EnrolledCourses />}
-              />
+              /> */}
             </>
           )}
         </Route>

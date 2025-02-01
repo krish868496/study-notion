@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { ACCOUNT_TYPE } from "../../common/constant";
 import { addToCart } from "../../../slices/cartSlice";
 import { useNavigate } from "react-router-dom";
+import MainButton from "../../common/MainButton";
 
 const CourseDetailsCard = ({
   course,
@@ -17,13 +18,12 @@ const CourseDetailsCard = ({
   const { token } = useSelector((state) => state.auth);
   const { thumbnail, price } = course;
   function handleAddToCart() {
-    console.log(this)
+    console.log(this);
     if (user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
       toast.error("Only students can add courses to cart");
       return;
     }
     if (token) {
-      console.log(this)
       dispatch(addToCart(this));
       // return;
     }
@@ -35,48 +35,58 @@ const CourseDetailsCard = ({
     //   btn1Handler: () => navigate("/login"),
     //   btn2Handler: setConfirmationModal(null),
     // });
-  };
+  }
   const handleShare = () => {
     copy(window.location.href);
     toast.success("Link Copied to clipboard");
   };
   return (
     <div>
-      <div className="">
-        {/* <img
+      <div className="flex flex-col gap-5">
+        <img
           src={thumbnail}
           alt=""
-          className="max-h-[300px] min-h-[180px] w-[400px] rounded-xl"
-        /> */}
-        <p>Rs. {price}</p>
-        <button
-          onClick={
-            user && course?.studentEnrolled.includes(user?._id)
-              ? () => navigate("/dashboard/enrolled-courses")
-              : handleBuyCourse
-          }
-        >
-          {user && course?.studentEnrolled.includes(user?._id)
-            ? "Go to Course"
-            : "Buy Now"}
-        </button>
-        {!course?.studentEnrolled.includes(user?._id) && (
-          <button onClick={handleAddToCart.bind(course)}>Add to cart</button>
-        )}
-      </div>
-      <div>
-        <p>3-Day Money-Back Guarantee</p>
-        <p>This Course includes:</p>
-        <div className="flex flex-col gap-y-3">
-          {course?.instructions?.map((item, index) => (
-            <p key={index} className="flex gap-2">
-              <span>{item}</span>
-            </p>
-          ))}
+          className="max-h-[300px] min-h-[180px] w-[400px] rounded-md"
+        />
+        <div className="flex flex-col gap-5 p-3">
+          <p className="font-bold leading-9 text-richblue-5 text-[30px] font-inter">
+            Rs. {price}
+          </p>
+          <MainButton
+            onClick={
+              user && course?.studentEnrolled.includes(user?._id)
+                ? () => navigate("/dashboard/enrolled-courses")
+                : handleBuyCourse
+            }
+            active={true}
+          >
+            {user && course?.studentEnrolled.includes(user?._id)
+              ? "Go to Course"
+              : "Buy Now"}
+          </MainButton>
+          {!course?.studentEnrolled.includes(user?._id) && (
+            <MainButton onClick={handleAddToCart.bind(course)}>
+              Add to cart
+            </MainButton>
+          )}
+          <div className="flex flex-col gap-1">
+            <p className="text-center">3-Day Money-Back Guarantee</p>
+            <p>This Course includes:</p>
+            <div className="flex flex-col gap-y-3">
+              {course?.instructions?.map((item, index) => (
+                <p
+                  key={index}
+                  className="flex gap-2 font-semibold text-caribbeangreen-800"
+                >
+                  <span>{item}</span>
+                </p>
+              ))}
+            </div>
+          </div>
+          <div className="text-lg font-semibold leading-7 tracking-wide text-center text-yellow-100">
+            <button onClick={handleShare}>Share</button>
+          </div>
         </div>
-      </div>
-      <div>
-        <button onClick={handleShare}>Share</button>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ const { instance } = require("../config/razorpay");
 const Course = require("../models/Course");
 const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
+const crypto = require("crypto");
 const {
   courseEnrollmentEmail,
 } = require("../mail/templates/CourseEnrollmentEmail");
@@ -11,45 +12,65 @@ exports.capturePayment = async (req, res) => {
   const { courses } = req.body;
   const userId = req.user.id;
 
-  if (courses.length === 0) {
-    return res.json({
+  console.log(courses, "courses array");
+
+  if (!courses || courses.length === 0) {
+    return res.status(400).json({
       success: false,
-      message: "please provide courses ID",
+      message: "Please provide course IDs",
     });
   }
+
   let totalAmount = 0;
   for (const course_id of courses) {
-    let course;
+    console.log(course_id, "course id id ");
     try {
-      course = await Course.findById(course_id);
-      if (!course) {
+      // Validate ObjectId before querying
+      if (!mongoose.Types.ObjectId.isValid(course_id)) {
         return res.status(400).json({
           success: false,
-          message: "could not find course details",
+          message: `Invalid course ID: ${course_id}`,
         });
       }
-      // const uid = new mongoose.Types.ObjectId(userId);
 
-      if (course?.studentEnrolled?.includes(userId)) {
-        return res.status(200).json({
+      const course = await Course.findById(
+        new mongoose.Types.ObjectId(course_id)
+      );
+
+      if (!course) {
+        return res.status(404).json({
           success: false,
-          message: "you have already enrolled in this course",
+          message: "Could not find course details",
         });
       }
-      totalAmount += course?.price;
+
+      // Convert user ID to ObjectId
+      const uid = new mongoose.Types.ObjectId(userId);
+
+      if (course?.studentEnrolled?.includes(uid)) {
+        return res.status(400).json({
+          success: false,
+          message: "You have already enrolled in this course",
+        });
+      }
+
+      totalAmount += course.price;
     } catch (error) {
       console.error(error);
       return res.status(500).json({
         success: false,
-        message: error.message,
+        message: "Internal Server Error",
       });
     }
   }
+
+  // Razorpay Order Creation
   const options = {
-    amount: totalAmount * 100, // amount in the smallest currency unit (hundredths of a rupee)
+    amount: totalAmount * 100, // Convert amount to paisa (smallest currency unit)
     currency: "INR",
     receipt: Date.now().toString(),
   };
+
   try {
     const paymentResponse = await instance.orders.create(options);
     res.status(200).json({
@@ -57,12 +78,12 @@ exports.capturePayment = async (req, res) => {
       message: "Payment captured successfully",
       paymentResponse,
     });
-
+    console.log(paymentResponse, "payment response");
   } catch (error) {
     console.error(error);
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Payment processing failed",
     });
   }
 };
@@ -87,7 +108,6 @@ exports.verifyPayment = async (req, res) => {
   }
   //   enroll student if signature match
   await enrolledStudents(courses, userId, res);
-  return res.status(200).json({ message: "Payment succeeded", success: true });
 };
 
 const enrolledStudents = async (courses, userId, res) => {
@@ -99,7 +119,7 @@ const enrolledStudents = async (courses, userId, res) => {
     // find the course and enroll the student
     const enrolledCourse = await Course.findByIdAndUpdate(
       courseId,
-      { $push: { studentsEnrolled: userId } },
+      { $push: { studentEnrolled: userId } },
       { new: true }
     );
     if (!enrolledCourse) {
@@ -110,16 +130,15 @@ const enrolledStudents = async (courses, userId, res) => {
 
     const enrolledStudentDetails = await User.findByIdAndUpdate(
       userId,
-      { $push: { courseId: courseId } },
+      { $push: { courses: courseId } },
       { new: true }
     );
 
-    // send email to the user
-    await mailSender.sendMail({
-      from: process.env.EMAIL_FROM,
-      to: enrolledCourse.instructorEmail,
-      subject: "Course Enrollment",
-      html: courseEnrollmentEmail(enrolledCourse, userId),
+    return res.status(200).json({
+      message: "Payment succeeded",
+      success: true,
+      enrolledStudentDetails,
+      enrolledCourse,
     });
   }
 };
@@ -138,16 +157,98 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
   try {
     // find the student
     const enrolledStudentDetails = await User.findById(userId);
-    console.log(enrolledStudentDetails, "enrolledStudentDetails");
     await mailSender(
       enrolledStudentDetails.email,
-      "Payment Successful",
-      `Your payment of ${
-        amount / 100
-      } has been successfully captured. Your order ID is ${orderId}.`
-      // {
-      //   attachments: [{ filename: "payment-receipt.pdf", path: "path/to/payment-receipt.pdf" }],
-      // }
+      `${enrolledStudentDetails.firstName} you have been successfully enrolled to the course`,
+      `You have been successfully enrolled to the Course `,
+      `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .content {
+            padding: 20px;
+            background-color: #ffffff;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .order-details {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>Order Confirmation</h1>
+        </div>
+        
+        <div class="content">
+            <p>Dear ${enrolledStudentDetails?.firstName},</p>
+            
+            <p>Thank you for your order! We're pleased to confirm that we've received your payment and your order has been processed successfully.</p>
+            
+            <div class="order-details">
+                <h3>Order Details:</h3>
+                <p>Order ID: ${orderId}</p>
+                <p>Payment ID: ${paymentId}</p>
+                <p>Amount: ${amount}</p>
+                <p>Date: ${new Date()}</p>
+            </div>
+            
+            <p>You can track your order status by clicking the button below:</p>
+            
+            <a href="[Track Order URL]" class="button">Track Your Order</a>
+            
+            <p>If you have any questions about your order, please don't hesitate to contact our customer support team.</p>
+            
+            <p>Best regards,<br>Study Notion</p>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated email, please do not reply to this message.</p>
+            <p>&copy; 2025 Study Notion. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>`
     );
   } catch (error) {
     console.log(error);

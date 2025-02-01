@@ -19,7 +19,6 @@ router.put("/updateProfile", auth, updateProfile);
 // router for update profile picture
 router.put("/updateDisplayPicture", auth, updateDisplayPicture);
 // router for delete profile picture
-router.put("/removeDisplayPicture", auth, removeDisplayPicture);
 // router for get user details
 router.get("/getUserDetails", auth, getAllDetails);
 // router for enroll courses

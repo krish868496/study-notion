@@ -61,12 +61,11 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
-
 // update profile picture
 exports.updateDisplayPicture = async (req, res) => {
   // const { displayPicture } = req.files;
   const file = req.files.displayPicture;
-  console.log(file, "file")
+  console.log(file, "file");
   if (!file) {
     res.status(404).json({
       message: "Display picture not found",
@@ -77,17 +76,16 @@ exports.updateDisplayPicture = async (req, res) => {
   const id = req.user.id;
 
   try {
-    const cloudinaryImageUrl = await uploadFileToCloudinary(
-      file,
-      "FileUpload"
-    );
+    const cloudinaryImageUrl = await uploadFileToCloudinary(file, "FileUpload");
 
     // find profile picture
     const userDetails = await User.findByIdAndUpdate(
       { _id: id },
       { image: cloudinaryImageUrl.secure_url },
       { new: true }
-    ).populate("additionalDetails").exec();
+    )
+      .populate("additionalDetails")
+      .exec();
 
     res.status(200).json({
       success: true,
@@ -110,7 +108,11 @@ exports.removeDisplayPicture = async (req, res) => {
 
   try {
     // find profile picture and delete from database
-    const userDetails = await User.findByIdAndUpdate(id, {image: null}, {new: true});
+    const userDetails = await User.findByIdAndUpdate(
+      id,
+      { image: null },
+      { new: true }
+    );
     res.status(200).json({
       success: true,
       message: "profile picture deleted successfully",
@@ -178,9 +180,17 @@ exports.getEnrolledCourses = async (req, res) => {
   try {
     const userId = req.user.id;
     const userDetails = await User.findOne({ _id: userId })
-      .populate("courses")
+      .populate({
+        path: "courses",
+        populate: {
+          path: "courseContent",
+          populate: {
+            path: "subSection",
+          },
+        },
+      })
       .exec();
-
+    console.log(userDetails, "userdetails")
     if (!userDetails) {
       return res.status(404).json({
         message: "user not found",

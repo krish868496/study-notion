@@ -35,6 +35,7 @@ const VideoDetails = () => {
         setVideoEnded(false);
       }
     };
+    setVideoSpecificDetails();
   }, [courseSectionData, courseEntireData, location.pathname]);
 
   const isFirstVideo = () => {
@@ -105,7 +106,9 @@ const VideoDetails = () => {
         }
   };
   const handleLectureCompletion = () => {};
-  return <div></div>;
+  return <div>
+    <p>Video details sidebar</p>
+  </div>;
 };
 
 export default VideoDetails;
