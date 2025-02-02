@@ -175,32 +175,81 @@ exports.getAllDetails = async (req, res) => {
   }
 };
 
-// enrolled courses
+// // enrolled courses
+// exports.getEnrolledCourses = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const userDetails = await User.findOne({ _id: userId })
+//       .populate({
+//         path: "courses",
+//         populate: {
+//           path: "courseContent",
+//           populate: {
+//             path: "subSection",
+//           },
+//         },
+//       })
+//       .exec();
+//     console.log(userDetails, "userdetails");
+//     if (!userDetails) {
+//       return res.status(404).json({
+//         message: "user not found",
+//         success: false,
+//       });
+//     }
+//     return res.status(200).json({
+//       success: true,
+//       message: "user enrolled courses fetched successfully",
+//       courses: userDetails.courses,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// };
+
+
 exports.getEnrolledCourses = async (req, res) => {
   try {
     const userId = req.user.id;
+
+    // Fetch only necessary fields (avoid over-fetching)
     const userDetails = await User.findOne({ _id: userId })
       .populate({
         path: "courses",
+        select: "courseName courseContent", // Fetch only needed fields
         populate: {
           path: "courseContent",
+          select: "_id subSection", // Fetch only IDs, not full details
           populate: {
             path: "subSection",
+            select: "_id", // Fetch only subsection IDs
           },
         },
       })
       .exec();
-    console.log(userDetails, "userdetails")
+
     if (!userDetails) {
       return res.status(404).json({
-        message: "user not found",
+        message: "User not found",
         success: false,
       });
     }
+
+    // Extract and format response
+    const enrolledCourses = userDetails.courses.map((course) => ({
+      _id: course._id,
+      courseName: course.courseName,
+      firstSection: course.courseContent?.[0]?._id || null,
+      firstSubSection: course.courseContent?.[0]?.subSection?.[0]?._id || null,
+    }));
+
     return res.status(200).json({
       success: true,
-      message: "user enrolled courses fetched successfully",
-      courses: userDetails.courses,
+      message: "User enrolled courses fetched successfully",
+      courses: enrolledCourses,
     });
   } catch (error) {
     return res.status(500).json({

@@ -203,7 +203,7 @@ export const updateSection = async (data, token) => {
   return result;
 };
 export const updateSubSection = async (data, token) => {
-  console.log(data)
+  console.log(data);
   const toastId = toast.loading("Loading...");
   let result = null;
   try {
@@ -301,11 +301,13 @@ export const getFullDetailsOfCourse = async (courseId, token) => {
       "GET",
       `${GET_FULL_COURSE_DETAILS_AUTHENTICATED}/${courseId}`,
       {
+        token,
+      },
+      {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // Optional, but ensures correct content type
+        // "Content-Type": "application/json", // Optional, but ensures correct content type
       }
     );
-    console.log(response)
     if (!response.data.success) {
       throw new Error(response.data.message);
     }

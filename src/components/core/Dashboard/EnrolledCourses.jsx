@@ -12,7 +12,6 @@ const EnrolledCourses = () => {
   const getEnrolledCourses = async () => {
     try {
       const response = await getUserEnrolledCourses(token);
-      console.log(response)
       setEnrolledCourses(response);
     } catch (error) {
       console.log("unable to fetch courses");
