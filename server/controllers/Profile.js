@@ -175,42 +175,6 @@ exports.getAllDetails = async (req, res) => {
   }
 };
 
-// // enrolled courses
-// exports.getEnrolledCourses = async (req, res) => {
-//   try {
-//     const userId = req.user.id;
-//     const userDetails = await User.findOne({ _id: userId })
-//       .populate({
-//         path: "courses",
-//         populate: {
-//           path: "courseContent",
-//           populate: {
-//             path: "subSection",
-//           },
-//         },
-//       })
-//       .exec();
-//     console.log(userDetails, "userdetails");
-//     if (!userDetails) {
-//       return res.status(404).json({
-//         message: "user not found",
-//         success: false,
-//       });
-//     }
-//     return res.status(200).json({
-//       success: true,
-//       message: "user enrolled courses fetched successfully",
-//       courses: userDetails.courses,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
-
-
 exports.getEnrolledCourses = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -219,10 +183,10 @@ exports.getEnrolledCourses = async (req, res) => {
     const userDetails = await User.findOne({ _id: userId })
       .populate({
         path: "courses",
-        select: "courseName courseContent", // Fetch only needed fields
+        select: "courseName courseContent, description, duration, thumbnail", // Fetch only needed fields
         populate: {
           path: "courseContent",
-          select: "_id subSection", // Fetch only IDs, not full details
+          select: "_id subSection", // Fetch only IDs and subsection, not full details
           populate: {
             path: "subSection",
             select: "_id", // Fetch only subsection IDs
@@ -230,6 +194,7 @@ exports.getEnrolledCourses = async (req, res) => {
         },
       })
       .exec();
+    console.log(userDetails, "userDetails");
 
     if (!userDetails) {
       return res.status(404).json({
@@ -242,9 +207,14 @@ exports.getEnrolledCourses = async (req, res) => {
     const enrolledCourses = userDetails.courses.map((course) => ({
       _id: course._id,
       courseName: course.courseName,
-      firstSection: course.courseContent?.[0]?._id || null,
-      firstSubSection: course.courseContent?.[0]?.subSection?.[0]?._id || null,
+      description: course.description,
+      thumbnail: course.thumbnail,
+      duration: course.duration,
+      // firstSection: course.courseContent?.[0] || null, // First section ID only
+      // firstSubSection: course.courseContent?.[0]?.subSection?.[0] || null, // First subsection ID only
+      courseContent: course.courseContent,
     }));
+    console.log(enrolledCourses, "enrolled courses");
 
     return res.status(200).json({
       success: true,

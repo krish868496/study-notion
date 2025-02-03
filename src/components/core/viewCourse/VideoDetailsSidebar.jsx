@@ -15,24 +15,24 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
     completedLectures,
   } = useSelector((state) => state.viewCourse);
 
-  useEffect(() => {
-    (() => {
-      if (!courseSectionData.length) return;
-      const currentSectionIndex = courseSectionData.findIndex(
-        (section) => section._id === sectionId
-      );
-      const currentSubSectionIndex = courseSectionData?.[
-        currentSectionIndex
-      ].subSection.findIndex((data) => data.id === subSectionId);
+  // useEffect(() => {
+  //   (() => {
+  //     if (!courseSectionData.length) return;
+  //     const currentSectionIndex = courseSectionData.findIndex(
+  //       (section) => section._id === sectionId
+  //     );
+  //     const currentSubSectionIndex = courseSectionData?.[
+  //       currentSectionIndex
+  //     ].subSection.findIndex((data) => data.id === subSectionId);
 
-      const activeSubSectionId =
-        courseSectionData[currentSectionIndex].subSection?.[
-          currentSubSectionIndex
-        ]?._id;
-      setActiveStatus(courseSectionData?.[currentSectionIndex]?._id);
-      setVideoBarActive(activeSubSectionId);
-    })();
-  }, [courseSectionData, courseEntireData, location.pathname]);
+  //     const activeSubSectionId =
+  //       courseSectionData[currentSectionIndex].subSection?.[
+  //         currentSubSectionIndex
+  //       ]?._id;
+  //     setActiveStatus(courseSectionData?.[currentSectionIndex]?._id);
+  //     setVideoBarActive(activeSubSectionId);
+  //   })();
+  // }, [courseSectionData, courseEntireData, location.pathname]);
 
   return (
     <div className="text-richblack-5">

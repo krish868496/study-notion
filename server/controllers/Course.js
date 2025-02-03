@@ -342,9 +342,9 @@ exports.getFullCourseDetails = async (req, res) => {
           path: "courses",
           populate: {
             path: "courseContent",
-            populate:{
-              path: "subSection"
-            }
+            populate: {
+              path: "subSection",
+            },
           },
         },
       })
@@ -366,8 +366,6 @@ exports.getFullCourseDetails = async (req, res) => {
         success: false,
       });
     }
-
-    console.log(courseDetails);
 
     return res.status(200).json({
       message: "course details",
@@ -408,3 +406,39 @@ exports.getAllInstructorCourses = async (req, res) => {
   }
 };
 
+exports.getStudentEnrolledFullCourseDetails = async (req, res) => {
+  const { courseId } = req.params || req.body;
+  if (!courseId)
+    return res.status(404).json({
+      success: false,
+      message: "Course id not provided",
+    });
+  const courseDetails = await Course.findById(courseId).populate({
+    path: "studentEnrolled",
+    populate: {
+      path: "courses",
+      populate: {
+        path: "courseContent",
+        populate: {
+          path: "subSection",
+        },
+      },
+    },
+  });
+  if (courseDetails.length === 0) {
+    res.status(404).json({
+      message: "Course enrolled not found",
+      success: false,
+    });
+  }
+
+//  const enrolledCourse = courseDetails?.studentEnrolled?.map((course) => ({
+//    courses: course,
+//  }));
+  // console.log(enrolledCourse, "update data");
+  return res.status(200).json({
+    success: true,
+    message: "Successfully fetch enrolled students",
+    enrolledStudent: courseDetails?.studentEnrolled?.courses,
+  });
+};

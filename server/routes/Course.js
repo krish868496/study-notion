@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router()
 
-const { createCourse, editCourse, getCourseDetails,  showAllCourses, getAllInstructorCourses, deleteAllCourses, getFullCourseDetails } = require("../controllers/Course")
+const { createCourse, editCourse, getCourseDetails,  showAllCourses, getAllInstructorCourses, deleteAllCourses, getFullCourseDetails, enrolledCourse, getStudentEnrolledFullCourseDetails } = require("../controllers/Course")
 // category controller import 
 const {  createCategory, showAllCategorys, categoryPageDetails } = require("../controllers/Category")
 
@@ -13,7 +13,8 @@ const {createSubSection, updateSubSection, deleteSubSection} = require("../contr
 // const {createRatingAndReview, getAllRating, getAverageRating} = require("../controllers/RatingAndReview")
 
 // import middlewares 
-const {auth, isInstructor, isAdmin, isStudent} = require("../middlewares/auth")
+const {auth, isInstructor, isAdmin, isStudent, allowStudentAndInstructor} = require("../middlewares/auth");
+const { courseProgress } = require('../controllers/CourseProgress');
 
 // // course can only be created by instructor 
 router.post("/createCourse", auth, isInstructor, createCourse)
@@ -42,13 +43,19 @@ router.get("/getCourseDetails/:courseId", getCourseDetails);
 router.get(
   "/getFullCourseDetails/:courseId",
   auth,
-  isStudent,
+  allowStudentAndInstructor,
   getFullCourseDetails
+);
+router.get(
+  "/getStudentEnrolledFullCourseDetails/:courseId",
+  auth,
+  isStudent,
+  getStudentEnrolledFullCourseDetails
 );
 // router.post("/verifysignature", verifySignature)
 
 
-
+router.post("/getProgressPercentage", auth, isStudent, courseProgress);
 
 
 
