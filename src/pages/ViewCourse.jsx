@@ -15,7 +15,6 @@ const ViewCourse = () => {
   const [reviewModal, setReviewModal] = useState(false);
   const { courseId } = useParams();
   const { token } = useSelector((state) => state.auth);
-  console.log(courseId);
 
   const dispatch = useDispatch();
 
@@ -26,25 +25,25 @@ const ViewCourse = () => {
         token
       );
       console.log(courseData);
-      courseData.forEach((course) => {
-        dispatch(setCourseSectionData(course?.courseContent));
-        dispatch(setEntireCourseData(course));
-        dispatch(setCompletedLectures(course?.completedVideos || 0));
-        let lectures = 0;
-        course?.courseContent.forEach((section) => {
-          lectures += section?.subSection?.length;
-        });
-        dispatch(setTotalNoOfLectures(lectures));
+      dispatch(setCourseSectionData(courseData?.courseContent || []));
+      dispatch(setEntireCourseData(courseData));
+      dispatch(setCompletedLectures(courseData?.completedVideos || []));
+      let lectures = 0;
+      courseData?.courseContent.forEach((section) => {
+        lectures += section?.subSection?.length;
       });
+      dispatch(setTotalNoOfLectures(lectures));
     };
     setCourseSpecificDetails();
   }, []);
 
   return (
     <>
-      <div>
-        <VideoDetailsSidebar setReviewModal={setReviewModal} />
-        <div>
+      <div className="grid grid-cols-12 gap-4">
+        <div className="col-span-3 p-2 border border-richblack-5">
+          <VideoDetailsSidebar setReviewModal={setReviewModal} />
+        </div>
+        <div className="col-span-9 p-2">
           <Outlet />
         </div>
       </div>

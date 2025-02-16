@@ -194,7 +194,7 @@ exports.getEnrolledCourses = async (req, res) => {
         },
       })
       .exec();
-    console.log(userDetails, "userDetails");
+      console.log(userDetails, "userDetails")
 
     if (!userDetails) {
       return res.status(404).json({
@@ -210,10 +210,10 @@ exports.getEnrolledCourses = async (req, res) => {
       description: course.description,
       thumbnail: course.thumbnail,
       duration: course.duration,
-      // firstSection: course.courseContent?.[0] || null, // First section ID only
-      // firstSubSection: course.courseContent?.[0]?.subSection?.[0] || null, // First subsection ID only
-      courseContent: course.courseContent,
+      firstSection: course.courseContent?.[0]._id.toString() || null, // First section ID only
+      firstSubSection: course.courseContent?.[0]?.subSection?.[0]._id.toString() || null, // First subsection ID only
     }));
+
     console.log(enrolledCourses, "enrolled courses");
 
     return res.status(200).json({

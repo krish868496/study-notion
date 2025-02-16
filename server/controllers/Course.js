@@ -414,17 +414,13 @@ exports.getStudentEnrolledFullCourseDetails = async (req, res) => {
       message: "Course id not provided",
     });
   const courseDetails = await Course.findById(courseId).populate({
-    path: "studentEnrolled",
+    path: "courseContent",
     populate: {
-      path: "courses",
-      populate: {
-        path: "courseContent",
-        populate: {
-          path: "subSection",
-        },
-      },
+      path: "subSection",
     },
+    
   });
+  console.log(courseDetails)
   if (courseDetails.length === 0) {
     res.status(404).json({
       message: "Course enrolled not found",
@@ -432,13 +428,9 @@ exports.getStudentEnrolledFullCourseDetails = async (req, res) => {
     });
   }
 
-//  const enrolledCourse = courseDetails?.studentEnrolled?.map((course) => ({
-//    courses: course,
-//  }));
-  // console.log(enrolledCourse, "update data");
   return res.status(200).json({
     success: true,
     message: "Successfully fetch enrolled students",
-    enrolledStudent: courseDetails?.studentEnrolled?.courses,
+    enrolledStudent: courseDetails,
   });
 };

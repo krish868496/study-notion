@@ -53,6 +53,12 @@ const courseSchema = new mongoose.Schema({
   instructions: {
     type: [String],
   },
+  completedVideos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "subSection",
+    },
+  ],
   status: {
     type: String,
     enum: ["Draft", "Published"],

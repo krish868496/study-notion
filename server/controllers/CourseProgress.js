@@ -9,7 +9,9 @@ exports.courseProgress = async (req, res) => {
 
     // Validate inputs
     if (!subSectionId || !courseId) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res
+        .status(400)
+        .json({ message: "All fields are required", success: false });
     }
 
     // Verify user and course exist
@@ -38,14 +40,22 @@ exports.courseProgress = async (req, res) => {
         completedVideos: [subSectionId],
       });
     } else {
-      // Optionally, prevent duplicate entries
       if (!courseProgress.completedVideos.includes(subSectionId)) {
         courseProgress.completedVideos.push(subSectionId);
         await courseProgress.save();
       }
     }
+    // Ensure `completedVideos` exists in `courseDetails`
+    if (!courseDetails.completedVideos) {
+      courseDetails.completedVideos = [];
+    }
 
-    // Optionally, return the updated progress
+    // Prevent duplicate entries
+    if (!courseDetails.completedVideos.includes(subSectionId)) {
+      courseDetails.completedVideos.push(subSectionId);
+      await courseDetails.save();
+    }
+
     return res.status(200).json({
       message: "Course progress updated",
       courseProgress,

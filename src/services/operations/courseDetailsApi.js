@@ -20,6 +20,7 @@ const {
   GET_FULL_ENROLLED_STUDENT_COURSE_DETAILS_AUTHENTICATED,
   LECTURE_COMPLETION_API,
   CREATE_RATING_AP,
+  COURSE_PROGRESS,
 } = courseEndpoints;
 
 export const getAllCourses = async () => {
@@ -342,7 +343,6 @@ export const getStudentEnrolledFullDetailsOfCourse = async (
     if (!response.data.success) {
       throw new Error(response.data.message);
     }
-    console.log(response, "response");
     result = response?.data?.enrolledStudent;
     return result;
   } catch (error) {
@@ -350,4 +350,29 @@ export const getStudentEnrolledFullDetailsOfCourse = async (
     toast.error("Failed to load course details");
   }
   // toast.dismiss(toastId);
+};
+export const updateCourseProgress = async (courseId, subSectionId, token) => {
+  let result = null;
+  try {;
+    const response = await apiConnector(
+      "POST",
+      `${COURSE_PROGRESS}`,
+      {
+        // token,
+        courseId,
+        subSectionId,
+      },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    if (!response.data.success) {
+      throw new Error(response.data.message);
+    }
+    result = response?.data;
+    return result;
+  } catch (error) {
+    console.log(error);
+    toast.error("Failed to load course details");
+  }
 };

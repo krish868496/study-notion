@@ -4,6 +4,7 @@ const initialState = {
         courseSectionData: [],
         courseEntireData: [],
         completedLectures: [],
+        updateLecture: [],
         totalNoOfLectures: 0,
 }
 
@@ -16,13 +17,13 @@ const viewCourseSlice = createSlice({
       state.courseSectionData = action.payload;
     },
     setEntireCourseData: (state, action) => {
-      state.totalNoOfLectures = action.payload;
+      state.courseEntireData = action.payload;
     },
     setCompletedLectures: (state, action) => {
       state.completedLectures = action.payload;
     },
     updateCompletedLectures: (state, action) => {
-      state.completedLectures = action.payload;
+      state.updateLecture = action.payload;
     },
     setTotalNoOfLectures: (state, action) => {
       state.totalNoOfLectures = action.payload;

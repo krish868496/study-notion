@@ -22,11 +22,11 @@ const EnrolledCourses = () => {
   }, []);
   return (
     <div className="w-4/5 mx-auto text-richblack-5">
-      <h1>Enrolled Courses</h1>
       {!enrolledCourses ? (
         <div>No courses enrolled yet</div>
       ) : (
         <div>
+          <h1>Enrolled Courses</h1>
           <Table>
             <Thead>
               <Tr>
@@ -40,7 +40,7 @@ const EnrolledCourses = () => {
             {enrolledCourses?.map((course) => (
               <Tbody key={course?._id}>
                 <Link
-                  to={`/view-course/${course?._id}/section/${course?.courseContent[0]?._id}/sub-section/${course?.courseContent[0]?.subSection[0]?._id}`}
+                  to={`/view-course/${course?._id}/section/${course?.firstSection}/sub-section/${course?.firstSubSection}`}
                 >
                   <Tr>
                     <Td>
